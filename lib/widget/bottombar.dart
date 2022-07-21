@@ -1,10 +1,9 @@
 import 'package:check_mate/helper/consts.dart';
+import 'package:check_mate/pages/Chat/homePage.dart';
 import 'package:check_mate/pages/Home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import '../pages/Chat/chat_homescreen.dart';
 
 class BottomBar extends StatefulWidget {
   BottomBar({Key? key, required this.currentIndex}) : super(key: key);
@@ -42,7 +41,7 @@ class _BottomBarState extends State<BottomBar> {
           ),
           InkWell(
             onTap: () {
-              navigate(context: context, page: const ChatHomeScreen());
+              navigate(context: context, page: HomeScreen());
             },
             child: const Icon(
               CupertinoIcons.chat_bubble_fill,

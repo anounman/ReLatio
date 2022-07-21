@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import '../controller/get_geolocation.dart';
 import 'consts.dart';
 
@@ -31,6 +32,45 @@ checkUser(email) async {
   } else {
     return false;
   }
+}
+
+String getChannelName(Channel channel, User currentUser) {
+  if (channel.name != null) {
+    return channel.name!;
+  } else if (channel.state?.members.isNotEmpty ?? false) {
+    final otherMembers = channel.state?.members
+        .where(
+          (element) => element.userId != currentUser.id,
+        )
+        .toList();
+
+    if (otherMembers?.length == 1) {
+      return otherMembers!.first.user!.name ?? 'No name';
+    } else {
+      return 'Multiple users';
+    }
+  } else {
+    return 'No Channel Name';
+  }
+}
+
+String? getChannelImage(Channel channel, User currentUser) {
+  if (channel.image != null) {
+    return channel.image!;
+  } else if (channel.state?.members.isNotEmpty ?? false) {
+    final otherMembers = channel.state?.members
+        .where(
+          (element) => element.userId != currentUser.id,
+        )
+        .toList();
+
+    if (otherMembers?.length == 1) {
+      return otherMembers!.first.user?.image;
+    }
+  } else {
+    return null;
+  }
+  return null;
 }
 
 Map<dynamic, dynamic> userData = {

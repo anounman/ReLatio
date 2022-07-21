@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipecards/flutter_swipecards.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../controller/chat_controller.dart';
@@ -50,14 +50,15 @@ class _HomePageState extends State<HomePage> {
     final token = prefs.getString("userToken");
     debugPrint("Connectiong.....");
     debugPrint("id and token:$id , $token");
-    var client = StreamChat.of(context).client;
+    var client = StreamChatCore.of(context).client;
     client.connectUser(
-      User(id: id.toString() , extraData: {
-        'name' : name,
-      }), 
+      User(id: id.toString(), name: name, extraData: {
+        'name': name,
+      }),
       client.devToken(id.toString()).rawValue,
     );
-    debugPrint(StreamChat.of(context).currentUser!.id);
+
+    // debugPrint(StreamChat.of(context).currentUser!.id);
 
     debugPrint("Conected");
   }
@@ -188,8 +189,8 @@ class _HomePageState extends State<HomePage> {
                                     int index) async {
                               if (orientation.name == "right") {
                                 debugPrint("right");
-                                await createChannel(
-                                    StreamChat.of(context), user![index].id);
+                                await createChannel(StreamChatCore.of(context),
+                                    user![index].id);
                               } else if (orientation.name == "left") {
                                 debugPrint("left");
                               } else if (orientation.name == "up") {
