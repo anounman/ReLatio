@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:check_mate/helper/consts.dart';
+import 'package:check_mate/model/get_user_model.dart';
 import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/Home/widget/user_card.dart';
+import 'package:check_mate/utils/get_data.dart';
 import 'package:check_mate/widget/bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipecards/flutter_swipecards.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
-
+import 'package:http/http.dart' as http;
 import '../../controller/chat_controller.dart';
 import '../../helper/data_fetch.dart';
 import '../../utils/user_service.dart';
@@ -25,22 +29,26 @@ List<UserModel>? user;
 class _HomePageState extends State<HomePage> {
   late CardController cardController;
   TextEditingController? controller;
+  AccountData? accountData;
+  StreamChatClient? client;
 
   @override
   void initState() {
     cardController = CardController();
     controller = TextEditingController();
-    getUser();
-    getAuthData();
-    getLocation();
-
+    if (user == null) {
+      getUser();
+      getAuthData();
+      getLocation();
+    }
     super.initState();
   }
 
   getUser() async {
-    user = await UserData().getUserdata();
-    connetct();
+    await connetct();
 
+    accountData = await Data().getAccountData(userId);
+    user = await UserData().getUserdata(accountData!.iterestedGender);
     setState(() {});
   }
 
@@ -50,16 +58,15 @@ class _HomePageState extends State<HomePage> {
     final token = prefs.getString("userToken");
     debugPrint("Connectiong.....");
     debugPrint("id and token:$id , $token");
-    var client = StreamChatCore.of(context).client;
-    client.connectUser(
+    client = StreamChatCore.of(context).client;
+    await client!.connectUser(
       User(id: id.toString(), name: name, extraData: {
         'name': name,
       }),
-      client.devToken(id.toString()).rawValue,
+      client!.devToken(id.toString()).rawValue,
     );
 
-    // debugPrint(StreamChat.of(context).currentUser!.id);
-
+    setState(() {});
     debugPrint("Conected");
   }
 
@@ -102,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                                     (location == "")
                                         ? const CircularProgressIndicator()
                                             .scale(scaleValue: 0.2)
-                                        : location.text.wide.make(),
+                                        : location.text.justify.start.make(),
                                   ],
                                 ).pOnly(top: 5.h)
                               ],
@@ -188,9 +195,23 @@ class _HomePageState extends State<HomePage> {
                                 (CardSwipeOrientation orientation,
                                     int index) async {
                               if (orientation.name == "right") {
-                                debugPrint("right");
-                                await createChannel(StreamChatCore.of(context),
-                                    user![index].id);
+                                final url = Uri.parse(
+                                    "https://re-lation.herokuapp.com/like");
+                                final responce = await http.post(url,
+                                    headers: {
+                                      "Content-Type": "application/json"
+                                    },
+                                    body: jsonEncode({
+                                      "like": user![index].id,
+                                      "userID": userId
+                                    }));
+                                if (responce.statusCode == 200) {
+                                  showSnackbar("It's a match");
+                                  await createChannel(
+                                      // ignore: use_build_context_synchronously
+                                      StreamChatCore.of(context),
+                                      user![index].id);
+                                }
                               } else if (orientation.name == "left") {
                                 debugPrint("left");
                               } else if (orientation.name == "up") {

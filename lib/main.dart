@@ -1,14 +1,15 @@
+import 'package:check_mate/app.dart';
 import 'package:check_mate/page_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:stream_chat_flutter_core/stream_chat_flutter_core.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   //StreamChatClient
   final client = StreamChatClient(
-    '9bgnjm2b8v3p',
-    logLevel: Level.INFO,
+    streamKey,
+    logLevel: Level.OFF,
   );
   runApp(MyApp(
     client: client,
@@ -24,13 +25,9 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(builder: (context, snapshot) {
       return MaterialApp(
         builder: (context, widget) {
-          return StreamChatCore(
+          return StreamChat(
             client: client,
-            child: ChannelsBloc(
-              child: UsersBloc(
-                child: widget!,
-              ),
-            ),
+            child: widget,
           );
         },
         debugShowCheckedModeBanner: false,

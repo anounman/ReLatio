@@ -24,9 +24,11 @@ dependencies:
   appinio_swiper: ^1.0.3
   cached_network_image: ^3.2.1
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.19.1
+  firebase_core: ^1.20.0
+  firebase_messaging: ^12.0.1
   flutter:
     sdk: flutter
+  flutter_local_notifications: ^9.7.0
   flutter_screenutil: ^5.5.3+2
   flutter_svg: ^1.1.1+1
   flutter_swipecards: ^0.2.1
@@ -44,6 +46,7 @@ dependencies:
   stream_chat_flutter: ^4.0.0
   stream_chat_flutter_core: ^4.4.0
   velocity_x: ^3.5.1
+  workmanager: ^0.5.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

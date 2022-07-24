@@ -1,5 +1,5 @@
 import 'package:check_mate/helper/consts.dart';
-import 'package:check_mate/pages/Chat/homePage.dart';
+import 'package:check_mate/pages/Chat/chat_home.dart';
 import 'package:check_mate/pages/Home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +41,7 @@ class _BottomBarState extends State<BottomBar> {
           ),
           InkWell(
             onTap: () {
-              navigate(context: context, page: HomeScreen());
+              navigate(context: context, page: const ChannelListPage());
             },
             child: const Icon(
               CupertinoIcons.chat_bubble_fill,

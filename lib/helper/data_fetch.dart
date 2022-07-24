@@ -45,7 +45,26 @@ String getChannelName(Channel channel, User currentUser) {
         .toList();
 
     if (otherMembers?.length == 1) {
-      return otherMembers!.first.user!.name ?? 'No name';
+      return otherMembers!.first.user!.name;
+    } else {
+      return 'Multiple users';
+    }
+  } else {
+    return 'No Channel Name';
+  }
+}
+String getChannelId(Channel channel, User currentUser) {
+  if (channel.name != null) {
+    return channel.name!;
+  } else if (channel.state?.members.isNotEmpty ?? false) {
+    final otherMembers = channel.state?.members
+        .where(
+          (element) => element.userId != currentUser.id,
+        )
+        .toList();
+
+    if (otherMembers?.length == 1) {
+      return otherMembers!.first.user!.id;
     } else {
       return 'Multiple users';
     }

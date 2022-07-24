@@ -28,6 +28,7 @@ class _PageSelectorState extends State<PageSelector> {
   void initState() {
     getLoginStatus();
     getAuthData();
+    // setupNotifications();
     super.initState();
   }
 

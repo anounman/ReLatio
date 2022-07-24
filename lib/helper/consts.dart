@@ -17,6 +17,9 @@ setGoogleUser(GoogleSignInAccount user) async {
   upDateApp();
 }
 
+String curentChatUserdId = "";
+
+
 setUserId(id, userName) async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setString("userID", id);
