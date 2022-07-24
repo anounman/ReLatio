@@ -15,6 +15,7 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
 import '../../controller/chat_controller.dart';
 import '../../helper/data_fetch.dart';
+import '../../helper/notification.dart';
 import '../../utils/user_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -55,15 +56,19 @@ class _HomePageState extends State<HomePage> {
   Future connetct() async {
     final prefs = await SharedPreferences.getInstance();
     final id = prefs.getString("userID");
-    final token = prefs.getString("userToken");
+    // final token = prefs.getString("userToken");
     debugPrint("Connectiong.....");
-    debugPrint("id and token:$id , $token");
+    debugPrint("id and token:$id");
+    // ignore: use_build_context_synchronously
     client = StreamChatCore.of(context).client;
+    // userToken = await generateToken(id);
+    userToken = client!.devToken(id.toString()).rawValue;
+    debugPrint(userToken);
     await client!.connectUser(
       User(id: id.toString(), name: name, extraData: {
         'name': name,
       }),
-      client!.devToken(id.toString()).rawValue,
+      userToken,
     );
 
     setState(() {});
@@ -72,6 +77,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    backgroundFetch();
+
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomBar(

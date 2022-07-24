@@ -21,7 +21,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
     sort: const [SortOption('last_message_at')],
     limit: 20,
   );
-
+  
   @override
   void dispose() {
     _listController.dispose();
@@ -56,6 +56,7 @@ class ChannelPage extends StatefulWidget {
     required this.channel,
   }) : super(key: key);
   final Channel channel;
+
   @override
   State<ChannelPage> createState() => _ChannelPageState();
 }
