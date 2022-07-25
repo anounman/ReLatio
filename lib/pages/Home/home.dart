@@ -4,6 +4,7 @@ import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/model/get_user_model.dart';
 import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/Home/widget/user_card.dart';
+import 'package:check_mate/pages/match_page.dart';
 import 'package:check_mate/utils/get_data.dart';
 import 'package:check_mate/widget/bottombar.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ import 'package:velocity_x/velocity_x.dart';
 import 'package:http/http.dart' as http;
 import '../../controller/chat_controller.dart';
 import '../../helper/data_fetch.dart';
-import '../../helper/notification.dart';
 import '../../utils/user_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -46,9 +46,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   getUser() async {
-    await connetct();
+    if (client == null) await connetct();
 
     accountData = await Data().getAccountData(userId);
+    setUserData(accountData!);
     user = await UserData().getUserdata(accountData!.iterestedGender);
     setState(() {});
   }
@@ -77,8 +78,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    backgroundFetch();
-
     return Scaffold(
       backgroundColor: Colors.white,
       bottomNavigationBar: BottomBar(
@@ -180,12 +179,14 @@ class _HomePageState extends State<HomePage> {
                             minWidth: width(context) * 0.79,
                             minHeight: height(context) * 0.79,
                             cardBuilder: (context, index) {
-                              return UserCard(
-                                image: user![index].pictures,
-                                name: user![index].name,
-                                hoobies: user![index].hobbies[0],
-                                cardController: cardController,
-                              );
+                              return (user![index].id == userId)
+                                  ? Container()
+                                  : UserCard(
+                                      image: user![index].pictures,
+                                      name: user![index].name,
+                                      hoobies: user![index].hobbies[0],
+                                      cardController: cardController,
+                                    );
                             },
                             swipeUpdateCallback:
                                 (DragUpdateDetails details, Alignment align) {
@@ -214,6 +215,12 @@ class _HomePageState extends State<HomePage> {
                                     }));
                                 if (responce.statusCode == 200) {
                                   showSnackbar("It's a match");
+                                  navigate(
+                                      context: context,
+                                      page: MatchPage(
+                                          name: user![index].name,
+                                          image: user![index].pictures[0],
+                                          gender: user![index].gender));
                                   await createChannel(
                                       // ignore: use_build_context_synchronously
                                       StreamChatCore.of(context),

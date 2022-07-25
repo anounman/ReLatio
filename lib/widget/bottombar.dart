@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../pages/Profile/profile_page.dart';
+
 class BottomBar extends StatefulWidget {
   BottomBar({Key? key, required this.currentIndex}) : super(key: key);
   int currentIndex;
@@ -56,7 +58,11 @@ class _BottomBarState extends State<BottomBar> {
             ).opacity(value: (widget.currentIndex == 2) ? 1 : 0.6),
           ),
           InkWell(
-            onTap: () => setIndex(3),
+            onTap: () {
+              setIndex(3);
+              navigate(
+                  context: context, page: ProfilePage(), isDistroyed: true);
+            },
             child: const Icon(
               Icons.settings,
               size: 30,

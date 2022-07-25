@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:check_mate/app.dart';
 
 class ChannelListPage extends StatefulWidget {
   const ChannelListPage({
@@ -21,7 +22,7 @@ class _ChannelListPageState extends State<ChannelListPage> {
     sort: const [SortOption('last_message_at')],
     limit: 20,
   );
-  
+
   @override
   void dispose() {
     _listController.dispose();

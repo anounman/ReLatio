@@ -4,11 +4,19 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/get_user_model.dart';
+
 Color primaryColor = Colors.purple[400]!;
 bool isLogedin = false;
 String? userId;
 String? name;
 String? userEmail;
+List<String>? pictures;
+String? gender;
+String? age;
+String? interestedGender;
+List<String>? hobbies;
+String? about;
 
 String userToken = "";
 setGoogleUser(GoogleSignInAccount user) async {
@@ -19,7 +27,6 @@ setGoogleUser(GoogleSignInAccount user) async {
 
 String curentChatUserdId = "";
 
-
 setUserId(id, userName) async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setString("userID", id);
@@ -27,6 +34,17 @@ setUserId(id, userName) async {
   name = name;
   userId = id;
   await getAuthData();
+  upDateApp();
+}
+
+setUserData(AccountData accountData) async {
+  name = accountData.name;
+  userEmail = accountData.email;
+  age = accountData.age;
+  gender = accountData.gender;
+  interestedGender = accountData.iterestedGender;
+  hobbies = accountData.hobbies.first;
+  pictures = accountData.pictures;
   upDateApp();
 }
 
