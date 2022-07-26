@@ -1,6 +1,7 @@
 import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/pages/Chat/chat_home.dart';
 import 'package:check_mate/pages/Home/home.dart';
+import 'package:check_mate/pages/likepage.dart/likepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -34,7 +35,8 @@ class _BottomBarState extends State<BottomBar> {
           InkWell(
             onTap: () {
               setIndex(0);
-              navigate(context: context, page: const HomePage());
+              navigate(
+                  context: context, page: const HomePage(), isDistroyed: true);
             },
             child: const Icon(
               Icons.home_filled,
@@ -51,7 +53,11 @@ class _BottomBarState extends State<BottomBar> {
             ).opacity(value: (widget.currentIndex == 1) ? 1 : 0.6),
           ),
           InkWell(
-            onTap: () => setIndex(2),
+            onTap: () {
+              setIndex(2);
+              navigate(
+                  context: context, page: const LikePage(), isDistroyed: true);
+            },
             child: const Icon(
               CupertinoIcons.heart_fill,
               size: 30,
@@ -61,7 +67,9 @@ class _BottomBarState extends State<BottomBar> {
             onTap: () {
               setIndex(3);
               navigate(
-                  context: context, page: ProfilePage(), isDistroyed: true);
+                  context: context,
+                  page: const ProfilePage(),
+                  isDistroyed: true);
             },
             child: const Icon(
               Icons.settings,

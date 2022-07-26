@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:check_mate/model/user_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -22,7 +23,10 @@ checkUser(email) async {
   final uri = Uri.parse("https://re-lation.herokuapp.com/checkUser");
   final responce = await http.post(uri,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({"email": email.toString()}));
+      body: jsonEncode({
+        "email": email.toString(),
+        "Authentication": authToken,
+      }));
   debugPrint(responce.statusCode.toString());
   if (responce.statusCode == 200) {
     var data = jsonDecode(responce.body);
@@ -53,6 +57,7 @@ String getChannelName(Channel channel, User currentUser) {
     return 'No Channel Name';
   }
 }
+
 String getChannelId(Channel channel, User currentUser) {
   if (channel.name != null) {
     return channel.name!;
@@ -103,3 +108,20 @@ Map<dynamic, dynamic> userData = {
   "age": "",
   "iterestedGender": "",
 };
+
+calculateMatchs(UserModel user) {
+  int totalNumber = (user.hobbies.length + hobbies!.length) ~/ 2;
+  int totalMatch = 0;
+  List<String> bighoobiesList =
+      (user.hobbies.length >= hobbies!.length) ? user.hobbies.first : hobbies!;
+  List<String> smallHoobiesList =
+      (user.hobbies.length <= hobbies!.length) ? user.hobbies.first : hobbies!;
+
+  for (var hoobie in smallHoobiesList) {
+    if (bighoobiesList.contains(hoobie)) {
+      totalMatch++;
+    }
+  }
+  double percentage = ((totalNumber / totalMatch) * 100);
+  return percentage;
+}

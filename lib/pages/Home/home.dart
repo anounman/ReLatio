@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:check_mate/controller/update_current_location.dart';
 import 'package:check_mate/helper/consts.dart';
+import 'package:check_mate/helper/keep_page_alive.dart';
 import 'package:check_mate/model/get_user_model.dart';
 import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/Home/widget/user_card.dart';
@@ -46,18 +48,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   getUser() async {
-    if (client == null) await connetct();
-
     accountData = await Data().getAccountData(userId);
-    setUserData(accountData!);
+    await setUserData(accountData!);
+    if (client == null) await connetct();
     user = await UserData().getUserdata(accountData!.iterestedGender);
+    UpdateLocation().updateLocation(accountData!.id);
+    upDateApp();
     setState(() {});
   }
 
   Future connetct() async {
     final prefs = await SharedPreferences.getInstance();
     final id = prefs.getString("userID");
-    // final token = prefs.getString("userToken");
+    // final token = prefs.getString("userToken");W
     debugPrint("Connectiong.....");
     debugPrint("id and token:$id");
     // ignore: use_build_context_synchronously
@@ -78,24 +81,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: BottomBar(
-        currentIndex: 0,
-      ),
-      body: (user == null)
-          ? Container(
-              color: Colors.white,
-              child: Image.asset("assets/images/loading.gif").centered(),
-            ).centered()
-          : SingleChildScrollView(
-              child: Container(
+    return KeepAlivePage(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        bottomNavigationBar: (user == null)
+            ? null
+            : BottomBar(
+                currentIndex: 0,
+              ),
+        body: (user == null)
+            ? Container(
+                color: Colors.white,
+                child: Image.asset("assets/images/loading.gif").centered(),
+              ).centered()
+            : Container(
                 color: Colors.white,
                 height: height(context),
                 width: width(context),
                 child: SafeArea(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                  child: ListView(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -182,11 +186,8 @@ class _HomePageState extends State<HomePage> {
                               return (user![index].id == userId)
                                   ? Container()
                                   : UserCard(
-                                      image: user![index].pictures,
-                                      name: user![index].name,
-                                      hoobies: user![index].hobbies[0],
-                                      cardController: cardController,
-                                    );
+                                      user: user![index],
+                                      cardController: cardController);
                             },
                             swipeUpdateCallback:
                                 (DragUpdateDetails details, Alignment align) {
@@ -196,41 +197,46 @@ class _HomePageState extends State<HomePage> {
                               } else if (align.x > 0) {
                                 //Card is RIGHT swiping
                               } else if (align.y > 0) {
+                                debugPrint("up");
                                 //Card is Up swiping
                               }
                             },
                             swipeCompleteCallback:
                                 (CardSwipeOrientation orientation,
                                     int index) async {
-                              if (orientation.name == "right") {
-                                final url = Uri.parse(
-                                    "https://re-lation.herokuapp.com/like");
-                                final responce = await http.post(url,
-                                    headers: {
-                                      "Content-Type": "application/json"
-                                    },
-                                    body: jsonEncode({
-                                      "like": user![index].id,
-                                      "userID": userId
-                                    }));
-                                if (responce.statusCode == 200) {
-                                  showSnackbar("It's a match");
-                                  navigate(
-                                      context: context,
-                                      page: MatchPage(
-                                          name: user![index].name,
-                                          image: user![index].pictures[0],
-                                          gender: user![index].gender));
-                                  await createChannel(
-                                      // ignore: use_build_context_synchronously
-                                      StreamChatCore.of(context),
-                                      user![index].id);
+                              if ((user![index].id != userId)) {
+                                if (orientation.name == "right") {
+                                  final url = Uri.parse(
+                                      "https://re-lation.herokuapp.com/like");
+                                  final responce = await http.post(url,
+                                      headers: {
+                                        "Content-Type": "application/json"
+                                      },
+                                      body: jsonEncode({
+                                        "like": user![index].id,
+                                        "userID": userId
+                                      }));
+                                  if (responce.statusCode == 200) {
+                                    showSnackbar("It's a match");
+                                    await navigate(
+                                        context: context,
+                                        page: MatchPage(
+                                          user: user![index],
+                                        ));
+                                    await createChannel(
+                                        // ignore: use_build_context_synchronously
+                                        StreamChatCore.of(context),
+                                        user![index].id);
+                                  }
                                 }
                               } else if (orientation.name == "left") {
+                                if ((user![index].id == userId)) {}
                                 debugPrint("left");
                               } else if (orientation.name == "up") {
+                                if ((user![index].id == userId)) {}
                                 debugPrint("up");
                               } else if (orientation.name == "down") {
+                                if ((user![index].id == userId)) {}
                                 debugPrint("down");
                               }
 
@@ -245,7 +251,7 @@ class _HomePageState extends State<HomePage> {
                   ).pOnly(top: 20.h),
                 ),
               ),
-            ),
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:check_mate/data/profile_page_data.dart';
 import 'package:check_mate/helper/consts.dart';
-import 'package:check_mate/pages/landingPage/landing_page.dart';
+import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/register/questions_hobbies/hobbies/hobbie_box.dart';
 import 'package:check_mate/widget/bottombar.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +10,15 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../helper/keep_page_alive.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class DetailsPage extends StatefulWidget {
+  const DetailsPage({Key? key, required this.user}) : super(key: key);
+  final UserModel user;
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _DetailsPageState createState() => _DetailsPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _DetailsPageState extends State<DetailsPage> {
   int _imageIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -63,16 +64,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           Navigator.of(context).pop();
                         },
                         icon: const Icon(
-                          Icons.edit,
+                          Icons.arrow_back_ios,
                           color: Colors.black,
-                        ),
+                        ).pOnly(left: 5.w),
                       ),
                     ),
                   ),
                   flexibleSpace: FlexibleSpaceBar(
                     titlePadding: const EdgeInsets.all(0),
                     title: Container(
-                      height: 57.h,
+                      height: 55.h,
                       padding: const EdgeInsets.all(16),
                       decoration: const BoxDecoration(
                         color: Colors.white,
@@ -91,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 children: [
                                   const SizedBox(width: 2),
                                   Text(
-                                    '$name, $age',
+                                    '${widget.user.name}, ${widget.user.age}',
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -122,23 +123,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ],
                               ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  const Icon(
-                                    Icons.email,
-                                    color: Colors.pink,
-                                    size: 14,
-                                  ),
-                                  Text(
-                                    userEmail.toString(),
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey[400],
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   crossAxisAlignment: CrossAxisAlignment.end,
+                              //   children: [
+                              //     const Icon(
+                              //       Icons.location_on_outlined,
+                              //       color: Colors.pink,
+                              //       size: 14,
+                              //     ),
+                              //     Text(
+                              //       'New York . 25km',
+                              //       style: TextStyle(
+                              //         fontSize: 10,
+                              //         color: Colors.grey[400],
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                           SizedBox(
@@ -191,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Container(
                               padding: const EdgeInsets.only(bottom: 86),
                               child: CachedNetworkImage(
-                                imageUrl: pictures![_imageIndex],
+                                imageUrl: widget.user.pictures[_imageIndex],
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -223,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: double.infinity,
                                 child: ListView.builder(
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: pictures!.length,
+                                    itemCount: widget.user.pictures.length,
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
                                         onTap: () {
@@ -238,7 +239,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 borderRadius:
                                                     BorderRadius.circular(16),
                                                 child: CachedNetworkImage(
-                                                  imageUrl: pictures![index],
+                                                  imageUrl: widget
+                                                      .user.pictures[index],
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),
@@ -279,8 +281,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     Wrap(
                       spacing: 3,
                       runSpacing: 2,
-                      children: List.generate(hobbies!.length,
-                          (index) => hobbieCard(hoobie: hobbies![index])),
+                      children: List.generate(
+                          widget.user.hobbies[0].length,
+                          (index) => hobbieCard(
+                              hoobie: widget.user.hobbies[0][index])),
                     ),
                     const SizedBox(height: 16),
                     Row(
@@ -319,11 +323,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Image.asset(
-                                        image[(gender == "Male" ? 0 : 1)]
-                                                ["image"]
-                                            .toString()),
-                                    image[(gender == "Male" ? 0 : 1)]["gender"]
+                                    Image.asset(image[
+                                            (widget.user.gender == "Male"
+                                                ? 0
+                                                : 1)]["image"]
+                                        .toString()),
+                                    image[(widget.user.gender == "Male"
+                                            ? 0
+                                            : 1)]["gender"]
                                         .toString()
                                         .text
                                         .color(Colors.white)
@@ -374,12 +381,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Image.asset(image[
-                                            (interestedGender == "Male"
+                                            (widget.user.iterestedGender ==
+                                                    "Male"
                                                 ? 0
                                                 : 1)]["image"]
                                         .toString()),
-                                    image[(interestedGender == "Male" ? 0 : 1)]
-                                            ["gender"]
+                                    image[(widget.user.iterestedGender == "Male"
+                                            ? 0
+                                            : 1)]["gender"]
                                         .toString()
                                         .text
                                         .color(Colors.white)
@@ -438,22 +447,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ],
                                 ),
                               ),
-                        GestureDetector(
-                          onTap: () {
-                            setLogOut();
-                            navigate(
-                                context: context,
-                                page: const LadingPage(),
-                                isDistroyed: true);
-                          },
-                          child: "👋 Sign Out"
-                              .text
-                              .bold
-                              .size(20)
-                              .make()
-                              .centered()
-                              .pOnly(top: 10.h),
-                        ),
                       ],
                     ),
                   ),

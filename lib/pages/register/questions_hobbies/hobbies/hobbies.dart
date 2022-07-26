@@ -69,7 +69,11 @@ class _HobbiesState extends State<Hobbies> {
                 ),
               ),
         body: (isSigninUp)
-            ? Center(child: Image.asset("assets/images/loading.gif"))
+            ? Container(
+                height: height(context),
+                width: width(context),
+                color: Colors.white,
+                child: Center(child: Image.asset("assets/images/loading.gif")))
             : (formData == null)
                 ? const CircularProgressIndicator().centered()
                 : SafeArea(

@@ -31,8 +31,8 @@ class _UploadBoxState extends State<UploadBox> {
         itemBuilder: (context, index) {
           return GestureDetector(
               onTap: () async {
-                pickedFile =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                pickedFile = await ImagePicker()
+                    .pickImage(source: ImageSource.gallery, imageQuality: 70);
                 if (pickedFile != null) {
                   if (uploadedPhotoImageList.length > index) {
                     uploadedPhotoImageList.removeAt(index);

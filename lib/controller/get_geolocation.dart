@@ -1,3 +1,4 @@
+import 'package:check_mate/helper/consts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,7 +7,7 @@ class LocationController {
   Position? position;
 
   /// For init the Location of the user and store it to position variable
-  Future<void> initLocation() async {
+  Future initLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -14,6 +15,7 @@ class LocationController {
       position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.medium);
     }
+    return position;
   }
 
   ///To get the Address from the position

@@ -19,6 +19,7 @@ class AccountData {
     required this.iterestedGender,
     required this.hobbies,
     required this.pictures,
+    required this.likes,
   });
 
   String id;
@@ -29,6 +30,7 @@ class AccountData {
   String iterestedGender;
   List<List<String>> hobbies;
   List<String> pictures;
+  List<String> likes;
 
   factory AccountData.fromJson(Map<String, dynamic> json) => AccountData(
         id: json["_id"],
@@ -40,6 +42,7 @@ class AccountData {
         hobbies: List<List<String>>.from(
             json["hobbies"].map((x) => List<String>.from(x.map((x) => x)))),
         pictures: List<String>.from(json["pictures"].map((x) => x)),
+        likes: List<String>.from(json["likes"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,5 +55,6 @@ class AccountData {
         "hobbies": List<dynamic>.from(
             hobbies.map((x) => List<dynamic>.from(x.map((x) => x)))),
         "pictures": List<dynamic>.from(pictures.map((x) => x)),
+        "likes": List<dynamic>.from(likes.map((e) => e)),
       };
 }

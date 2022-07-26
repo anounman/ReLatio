@@ -91,12 +91,12 @@ class _LadingPageState extends State<LadingPage> {
                                     duration: const Duration(seconds: 2),
                                     curve: Curves.easeOutCirc);
                               } else {
-                                GoogleSignInAccount user = await googlesignIn();
-                                //set id and email value to a gobal variable
-                                await setGoogleUser(user);
                                 setState(() {
                                   isCheck = true;
                                 });
+                                GoogleSignInAccount user = await googlesignIn();
+                                //set id and email value to a gobal variable
+                                await setGoogleUser(user);
                                 bool isExist = await checkUser(user.email);
                                 setState(() {
                                   isCheck = false;

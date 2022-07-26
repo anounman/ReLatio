@@ -12,6 +12,7 @@ class Data {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "id": id.toString(),
+          "Authentication": authToken,
         }));
     if (res.statusCode == 200) {
       debugPrint(res.body);

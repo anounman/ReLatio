@@ -1,21 +1,32 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:check_mate/helper/consts.dart';
+import 'package:check_mate/helper/data_fetch.dart';
+import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/Chat/chat_home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class MatchPage extends StatefulWidget {
-  const MatchPage(
-      {Key? key, required this.name, required this.image, required this.gender})
-      : super(key: key);
-  final String image;
-  final String name;
-  final String gender;
+  const MatchPage({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
+  final UserModel user;
 
   @override
   _MatchPageState createState() => _MatchPageState();
 }
 
 class _MatchPageState extends State<MatchPage> {
+  double calculatedPercentage = 0;
+  @override
+  void initState() {
+    calculatedPercentage = calculateMatchs(widget.user);
+    setState(() {});
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,23 +42,25 @@ class _MatchPageState extends State<MatchPage> {
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Spacer(flex: 2),
             const Text(
-              "It's a match!",
+              "It's a match! ",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
                 fontSize: 28,
               ),
             ),
-            Text(
-              "You and ${widget.name} have liked each other.",
-              style: TextStyle(
-                color: Colors.grey[300],
-                fontSize: 16,
-              ),
-            ),
+            "You and ${widget.user.name} have liked each other."
+                .text
+                .color(Colors.grey[300])
+                .justify
+                .center
+                .size(16.sp)
+                .make()
+                .centered(),
             const SizedBox(height: 44),
             Stack(
               children: [
@@ -90,7 +103,7 @@ class _MatchPageState extends State<MatchPage> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(100),
                             child: CachedNetworkImage(
-                              imageUrl: widget.image,
+                              imageUrl: widget.user.pictures[0],
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -119,23 +132,14 @@ class _MatchPageState extends State<MatchPage> {
                               ),
                             ),
                             Center(
-                              child: Container(
+                              child: SizedBox(
                                 height: 56,
                                 width: 56,
-                                decoration: BoxDecoration(
-                                  color: Colors.green[300],
-                                  borderRadius: BorderRadius.circular(100),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 4,
+                                  color: Colors.green,
+                                  value: calculatedPercentage / 100,
                                 ),
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(32),
-                              ),
-                              child: Container(
-                                height: 30,
-                                width: 30,
-                                color: Colors.white,
                               ),
                             ),
                             Center(
@@ -148,12 +152,11 @@ class _MatchPageState extends State<MatchPage> {
                                 ),
                               ),
                             ),
-                            const Center(
-                                child: Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                              size: 35,
-                            )),
+                            Center(
+                                child: "${(calculatedPercentage / 10)}"
+                                    .text
+                                    .bold
+                                    .make()),
                           ],
                         ),
                       ),
@@ -180,7 +183,7 @@ class _MatchPageState extends State<MatchPage> {
                 ),
                 child: Center(
                   child: Text(
-                    "Message ${widget.gender == 'Female' ? 'her' : 'him'}",
+                    "Message ${widget.user.gender == 'Female' ? 'her' : 'him'}",
                     style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
