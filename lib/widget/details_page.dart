@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../helper/keep_page_alive.dart';
+import '../helper/data_fetch.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({Key? key, required this.user}) : super(key: key);
@@ -20,6 +21,14 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   int _imageIndex = 0;
+  int calculatedPercentage = 0;
+  @override
+  void initState() {
+    calculatedPercentage = calculateMatchs(widget.user);
+    setState(() {});
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return KeepAlivePage(
@@ -148,30 +157,38 @@ class _DetailsPageState extends State<DetailsPage> {
                             child: Stack(
                               children: [
                                 Container(
+                                  height: 64,
+                                  width: 64,
                                   decoration: BoxDecoration(
-                                    color: Colors.green[300],
                                     borderRadius: BorderRadius.circular(100),
+                                    color: Colors.white,
                                   ),
                                 ),
-                                Container(
-                                  height: 18,
-                                  width: 18,
-                                  color: Colors.white,
+                                Center(
+                                  child: SizedBox(
+                                    height: 56,
+                                    width: 56,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 4,
+                                      color: Colors.green,
+                                      value: calculatedPercentage / 100,
+                                    ),
+                                  ),
                                 ),
                                 Center(
                                   child: Container(
-                                    height: 28,
-                                    width: 28,
+                                    height: 46,
+                                    width: 46,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                   ),
                                 ),
-                                const Center(
+                                Center(
                                   child: Text(
-                                    '60%',
-                                    style: TextStyle(
+                                    "${calculatedPercentage.toString()}%",
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 8,
                                       fontWeight: FontWeight.bold,

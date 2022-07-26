@@ -1,3 +1,4 @@
+import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/Home/home.dart';
 import 'package:check_mate/pages/Home/widget/user_card.dart';
 import 'package:check_mate/widget/bottombar.dart';
@@ -20,11 +21,22 @@ class LikePage extends StatefulWidget {
 class _LikePageState extends State<LikePage> {
   late CardController cardController;
   TextEditingController? controller;
+  List<UserModel> filterList = [];
   @override
   void initState() {
     cardController = CardController();
     controller = TextEditingController();
+    filterUserList();
     super.initState();
+  }
+
+  filterUserList() {
+    for (int i = 0; i < user!.length; i++) {
+      if (likes!.contains(user![i].id)) {
+        filterList.add(user![i]);
+      }
+    }
+    setState(() {});
   }
 
   @override
@@ -36,10 +48,11 @@ class _LikePageState extends State<LikePage> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          "Liked You"
+          "Liked You 💕"
               .text
               .bold
-              .size(30.sp)
+              .color(primaryColor.withOpacity(0.8))
+              .size(28.sp)
               .make()
               .pOnly(top: 20.h, left: 20.w, bottom: 10.h),
           SizedBox(
@@ -53,10 +66,10 @@ class _LikePageState extends State<LikePage> {
                 minWidth: width(context) * 0.8,
                 minHeight: height(context) * 0.79,
                 cardBuilder: (context, index) {
-                  return (!likes!.contains(user![index].id))
-                      ? Container()
-                      : UserCard(
-                          user: user![index], cardController: cardController);
+                  // return (!filterList!.contains(user![index].id))
+                  // ? Container():
+                  return UserCard(
+                      user: filterList[index], cardController: cardController);
                 },
                 swipeUpdateCallback:
                     (DragUpdateDetails details, Alignment align) {
@@ -72,35 +85,32 @@ class _LikePageState extends State<LikePage> {
                 swipeCompleteCallback:
                     (CardSwipeOrientation orientation, int index) async {
                   if (orientation.name == "right") {
-                    if ((likes!.contains(user![index].id))) {
-                      showSnackbar("It's a match");
-                      await navigate(
-                          context: context,
-                          page: MatchPage(
-                            user: user![index],
-                          ));
-                      await createChannel(
-                          // ignore: use_build_context_synchronously
-                          StreamChatCore.of(context),
-                          user![index].id);
-                    }
+                    // if ((likes!.contains(user![index].id))) {
+                    showSnackbar("It's a match");
+                    await navigate(
+                        context: context,
+                        page: MatchPage(
+                          user: filterList[index],
+                        ));
+                    await createChannel(
+                        // ignore: use_build_context_synchronously
+                        StreamChatCore.of(context),
+                        filterList[index].id);
+                    // }
                   } else if (orientation.name == "left") {
-                    if ((likes!.contains(user![index].id))) {}
                     debugPrint("left");
                   } else if (orientation.name == "up") {
-                    if ((likes!.contains(user![index].id))) {}
                     debugPrint("up");
                   } else if (orientation.name == "down") {
-                    if ((likes!.contains(user![index].id))) {}
                     debugPrint("down");
                   }
 
-                  if (index == (user!.length - 1)) {
+                  if (index == (filterList.length - 1)) {
                     showSnackbar(
                         "Sorry we don't have more accounts in your location");
                   }
                 },
-                totalNum: user!.length),
+                totalNum: filterList.length),
           )
         ],
       ),

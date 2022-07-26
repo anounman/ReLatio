@@ -35,6 +35,8 @@ class _HomePageState extends State<HomePage> {
   AccountData? accountData;
   StreamChatClient? client;
 
+  List<UserModel> filteredUser = [];
+
   @override
   void initState() {
     cardController = CardController();
@@ -50,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   getUser() async {
     accountData = await Data().getAccountData(userId);
     await setUserData(accountData!);
-    if (client == null) await connetct();
+    if (client == null) connetct();
     user = await UserData().getUserdata(accountData!.iterestedGender);
     UpdateLocation().updateLocation(accountData!.id);
     upDateApp();
@@ -60,7 +62,7 @@ class _HomePageState extends State<HomePage> {
   Future connetct() async {
     final prefs = await SharedPreferences.getInstance();
     final id = prefs.getString("userID");
-    // final token = prefs.getString("userToken");W
+    // final token = prefs.getString("userToken");
     debugPrint("Connectiong.....");
     debugPrint("id and token:$id");
     // ignore: use_build_context_synchronously
@@ -68,13 +70,12 @@ class _HomePageState extends State<HomePage> {
     // userToken = await generateToken(id);
     userToken = client!.devToken(id.toString()).rawValue;
     debugPrint(userToken);
-    await client!.connectUser(
+    client!.connectUser(
       User(id: id.toString(), name: name, extraData: {
         'name': name,
       }),
       userToken,
     );
-
     setState(() {});
     debugPrint("Conected");
   }

@@ -35,6 +35,7 @@ dependencies:
   fluttertoast: ^8.0.9
   geocoding: ^2.0.4
   geolocator: ^9.0.0
+  google_mobile_ads: ^1.1.0
   google_places_flutter: ^2.0.5
   google_sign_in: ^5.4.0
   http: ^0.13.4

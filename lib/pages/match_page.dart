@@ -19,7 +19,7 @@ class MatchPage extends StatefulWidget {
 }
 
 class _MatchPageState extends State<MatchPage> {
-  double calculatedPercentage = 0;
+  int calculatedPercentage = 0;
   @override
   void initState() {
     calculatedPercentage = calculateMatchs(widget.user);
@@ -153,7 +153,9 @@ class _MatchPageState extends State<MatchPage> {
                               ),
                             ),
                             Center(
-                                child: "${(calculatedPercentage / 10)}"
+                                child: (calculatedPercentage)
+                                    .toString()
+                                    .split('.')[0]
                                     .text
                                     .bold
                                     .make()),

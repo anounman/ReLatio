@@ -110,18 +110,24 @@ Map<dynamic, dynamic> userData = {
 };
 
 calculateMatchs(UserModel user) {
-  int totalNumber = (user.hobbies.length + hobbies!.length) ~/ 2;
-  int totalMatch = 0;
-  List<String> bighoobiesList =
-      (user.hobbies.length >= hobbies!.length) ? user.hobbies.first : hobbies!;
-  List<String> smallHoobiesList =
-      (user.hobbies.length <= hobbies!.length) ? user.hobbies.first : hobbies!;
+  int userHobbiesLenth = user.hobbies.first.length;
+  int ownHobbiesLenth = hobbies!.length;
+  int m1 = 0;
+  int m2 = 0;
 
-  for (var hoobie in smallHoobiesList) {
-    if (bighoobiesList.contains(hoobie)) {
-      totalMatch++;
+  for (var hobbie in user.hobbies.first) {
+    if (hobbie.contains(hobbie)) {
+      m1++;
     }
   }
-  double percentage = ((totalNumber / totalMatch) * 100);
-  return percentage;
+
+  for (var hobbie in hobbies!) {
+    if (user.hobbies.first.contains(hobbie)) {
+      m2++;
+    }
+  }
+  int percentage1 = (m1 / userHobbiesLenth * 100).round();
+  int percentage2 = (m2 / ownHobbiesLenth * 100).round();
+
+  return ((percentage1 + percentage2) ~/ 2);
 }
