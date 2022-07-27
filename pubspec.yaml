@@ -46,6 +46,7 @@ dependencies:
   shared_preferences: ^2.0.15
   stream_chat_flutter: ^4.0.0
   stream_chat_flutter_core: ^4.4.0
+  stream_chat_persistence: ^4.3.0
   velocity_x: ^3.5.1
   workmanager: ^0.5.0
 

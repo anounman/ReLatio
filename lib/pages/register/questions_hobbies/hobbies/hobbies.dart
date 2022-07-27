@@ -48,6 +48,16 @@ class _HobbiesState extends State<Hobbies> {
                   setState(() {});
                   List<String> data = (await signUp())!;
                   setUserId(data[0], data[1]);
+                  // ignore: use_build_context_synchronously
+                  // Navigator.pop(context);
+                  // // ignore: use_build_context_synchronously
+                  // Navigator.pop(context);
+                  // // ignore: use_build_context_synchronously
+                  // Navigator.pop(context);
+                  // // ignore: use_build_context_synchronously
+                  // Navigator.pop(context);
+                  // // ignore: use_build_context_synchronously
+                  // Navigator.pop(context);
                   navigate(
                       context: context,
                       page: const HomePage(),

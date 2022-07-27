@@ -13,11 +13,9 @@ class MatchPage extends StatefulWidget {
     required this.user,
   }) : super(key: key);
   final UserModel user;
-
   @override
   _MatchPageState createState() => _MatchPageState();
 }
-
 class _MatchPageState extends State<MatchPage> {
   int calculatedPercentage = 0;
   @override

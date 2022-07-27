@@ -1,4 +1,4 @@
-import 'package:check_mate/utils/chat_token.dart';
+import 'package:check_mate/controller/google_signin.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -24,7 +24,7 @@ Position? position;
 
 String userToken = "";
 setGoogleUser(GoogleSignInAccount user) async {
-  userToken = await generateToken(user.id);
+  // userToken = await generateToken(user.id);
   savedAuthData(user, userToken);
   upDateApp();
 }
@@ -76,12 +76,15 @@ Future getAuthData() async {
 setLogin() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setBool("isLogedin", true);
+  googlesignIn();
   upDateApp();
 }
 
 setLogOut() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setBool("isLogedin", false);
+  googleSignOut();
+  prefs.clear();
   upDateApp();
 }
 

@@ -109,7 +109,6 @@ class _LadingPageState extends State<LadingPage> {
                                 } else {
                                   debugPrint(user.toString());
                                   if (user != null) {
-                                    setLogin();
                                     navigate(
                                         context: context,
                                         page: RegisterPage(user: user),

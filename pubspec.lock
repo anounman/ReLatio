@@ -211,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
+  drift:
+    dependency: transitive
+    description:
+      name: drift
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.7.1"
   equatable:
     dependency: transitive
     description:
@@ -681,6 +688,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  mutex:
+    dependency: transitive
+    description:
+      name: mutex
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   nested:
     dependency: transitive
     description:
@@ -994,6 +1008,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.1+1"
+  sqlite3:
+    dependency: transitive
+    description:
+      name: sqlite3
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.7.2"
+  sqlite3_flutter_libs:
+    dependency: transitive
+    description:
+      name: sqlite3_flutter_libs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.8"
   stack_trace:
     dependency: transitive
     description:
@@ -1029,6 +1057,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.4.0"
+  stream_chat_persistence:
+    dependency: "direct main"
+    description:
+      name: stream_chat_persistence
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.3.0"
   string_scanner:
     dependency: transitive
     description:

@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:check_mate/controller/update_current_location.dart';
 import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/helper/keep_page_alive.dart';
+import 'package:check_mate/main.dart';
 import 'package:check_mate/model/get_user_model.dart';
 import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/Home/widget/user_card.dart';
 import 'package:check_mate/pages/match_page.dart';
+import 'package:check_mate/pages/notificationservice/local_notification_service.dart';
 import 'package:check_mate/utils/get_data.dart';
 import 'package:check_mate/widget/bottombar.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipecards/flutter_swipecards.dart';
@@ -46,7 +49,70 @@ class _HomePageState extends State<HomePage> {
       getAuthData();
       getLocation();
     }
+    setupNotifications();
+    FirebaseMessaging.instance.getInitialMessage().then(
+          (message) {},
+        );
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        print("FirebaseMessaging.onMessage.listen");
+        if (message.notification != null) {
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data11 ${message.data}");
+          LocalNotificationService.createanddisplaynotification(message);
+        }
+      },
+    );
+
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {},
+    );
+
     super.initState();
+  }
+
+  void setupNotifications() async {
+    final firebaseMessaging = FirebaseMessaging.instance;
+    final res = await firebaseMessaging.requestPermission();
+    if (res.authorizationStatus != AuthorizationStatus.authorized) {
+      throw ArgumentError(
+          'You must allow notification permissions in order to receive push notifications');
+    }
+    firebaseMessaging.onTokenRefresh.listen(updateToken);
+    FirebaseMessaging.onMessage.listen((message) async {
+      debugPrint('message.data: ${message.data}');
+      handleNotification(
+        message,
+        StreamChat.of(context).client,
+      );
+    });
+    debugPrint("Conneted hahaha");
+    FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
+  }
+
+  addNotificationToken(id) async {
+    String token = await getDeviceTokenToSendNotification();
+    updateToken(token);
+    debugPrint(token);
+    var responce = await http.post(
+        Uri.parse("https://re-lation.herokuapp.com/addNotificationToken"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"id": id, "notKey": token}));
+    debugPrint(responce.body.toString());
+    debugPrint("Notificaiton Token ${responce.body}");
+  }
+
+  Future getDeviceTokenToSendNotification() async {
+    final prefs = await SharedPreferences.getInstance();
+    String id = prefs.getString("userID")!;
+    final FirebaseMessaging fcm = FirebaseMessaging.instance;
+    final token = await fcm.getToken(vapidKey: id);
+    return token.toString();
+  }
+
+  updateToken(String token) {
+    StreamChat.of(context).client.addDevice(token, PushProvider.firebase);
   }
 
   getUser() async {
@@ -62,14 +128,15 @@ class _HomePageState extends State<HomePage> {
   Future connetct() async {
     final prefs = await SharedPreferences.getInstance();
     final id = prefs.getString("userID");
+    addNotificationToken(id);
     // final token = prefs.getString("userToken");
     debugPrint("Connectiong.....");
     debugPrint("id and token:$id");
     // ignore: use_build_context_synchronously
     client = StreamChatCore.of(context).client;
-    // userToken = await generateToken(id);
+    // // userToken = await generateToken(id);
     userToken = client!.devToken(id.toString()).rawValue;
-    debugPrint(userToken);
+    // debugPrint(userToken);
     client!.connectUser(
       User(id: id.toString(), name: name, extraData: {
         'name': name,
@@ -103,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                   child: ListView(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(
                             width: width(context) * 0.6,
@@ -125,53 +192,53 @@ class _HomePageState extends State<HomePage> {
                                 ).pOnly(top: 5.h)
                               ],
                             ),
-                          ).pOnly(right: 30.w),
-                          SizedBox(
-                            child: Row(children: [
-                              // if (userId != null)
-                              //   CircleAvatar(
-                              //     radius: 15.r,
-                              //     backgroundImage:
-                              //         NetworkImage(googleUser!.photoUrl.toString()),
-                              //   ).pOnly(right: 10.w),
-                              Container(
-                                height: 30.h,
-                                width: 35.w,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey[200]!,
-                                      offset: const Offset(0.0, 1.0), //(x,y)
-                                      blurRadius: 4,
-                                    ),
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Center(
-                                  child: Stack(
-                                    children: [
-                                      const Icon(
-                                        Icons.notifications,
-                                        color: Colors.grey,
-                                      ).opacity(value: 0.9).centered(),
-                                      Align(
-                                        alignment: Alignment.topRight,
-                                        child: Container(
-                                          height: 5.h,
-                                          width: 5.h,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              color: Colors.purple),
-                                        ),
-                                      ).pOnly(top: 7.h, right: 10.w)
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ]),
-                          )
+                          ).pOnly(left: 10.w),
+                          // SizedBox(
+                          //   child: Row(children: [
+                          //     // if (userId != null)
+                          //     //   CircleAvatar(
+                          //     //     radius: 15.r,
+                          //     //     backgroundImage:
+                          //     //         NetworkImage(googleUser!.photoUrl.toString()),
+                          //     //   ).pOnly(right: 10.w),
+                          //     Container(
+                          //       height: 30.h,
+                          //       width: 35.w,
+                          //       decoration: BoxDecoration(
+                          //         boxShadow: [
+                          //           BoxShadow(
+                          //             color: Colors.grey[200]!,
+                          //             offset: const Offset(0.0, 1.0), //(x,y)
+                          //             blurRadius: 4,
+                          //           ),
+                          //         ],
+                          //         color: Colors.white,
+                          //         borderRadius: BorderRadius.circular(10),
+                          //       ),
+                          //       child: Center(
+                          //         child: Stack(
+                          //           children: [
+                          //             const Icon(
+                          //               Icons.notifications,
+                          //               color: Colors.grey,
+                          //             ).opacity(value: 0.9).centered(),
+                          //             Align(
+                          //               alignment: Alignment.topRight,
+                          //               child: Container(
+                          //                 height: 5.h,
+                          //                 width: 5.h,
+                          //                 decoration: BoxDecoration(
+                          //                     borderRadius:
+                          //                         BorderRadius.circular(100),
+                          //                     color: Colors.purple),
+                          //               ),
+                          //             ).pOnly(top: 7.h, right: 10.w)
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ]),
+                          // )
                         ],
                       ),
                       SizedBox(
