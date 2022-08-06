@@ -10,9 +10,11 @@ class UpdateLocation {
     final responce = http.post(url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          "id": id,
-          "coordinates": [longitude, latitude],
-          "Authentication": authToken,
-        }));
+          "id" : id,
+          "currentAddress" : {
+            "type" : "Point",
+            "coordinates" : [longitude , latitude]
+      }
+      }));
   }
 }

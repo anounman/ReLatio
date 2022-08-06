@@ -31,14 +31,13 @@ class HomePage extends StatefulWidget {
 }
 
 List<UserModel>? user;
+List<UserModel>? filteredUser = [];
 
 class _HomePageState extends State<HomePage> {
   late CardController cardController;
   TextEditingController? controller;
   AccountData? accountData;
   StreamChatClient? client;
-
-  List<UserModel> filteredUser = [];
 
   @override
   void initState() {
@@ -70,6 +69,15 @@ class _HomePageState extends State<HomePage> {
     );
 
     super.initState();
+  }
+
+  void filterUsers() {
+    for (var i = 0; i < user!.length; i++) {
+      if (!(user![i].likes.contains(userId))) {
+        filteredUser!.add(user![i]);
+      }
+    }
+    setState(() {});
   }
 
   void setupNotifications() async {
@@ -121,7 +129,7 @@ class _HomePageState extends State<HomePage> {
     if (client == null) connetct();
     user = await UserData().getUserdata(accountData!.iterestedGender);
     UpdateLocation().updateLocation(accountData!.id);
-    upDateApp();
+    filterUsers();
     setState(() {});
   }
 
@@ -157,7 +165,7 @@ class _HomePageState extends State<HomePage> {
             : BottomBar(
                 currentIndex: 0,
               ),
-        body: (user == null)
+        body: (filteredUser == null)
             ? Container(
                 color: Colors.white,
                 child: Image.asset("assets/images/loading.gif").centered(),
@@ -251,10 +259,10 @@ class _HomePageState extends State<HomePage> {
                             minWidth: width(context) * 0.79,
                             minHeight: height(context) * 0.79,
                             cardBuilder: (context, index) {
-                              return (user![index].id == userId)
+                              return (filteredUser![index].id == userId)
                                   ? Container()
                                   : UserCard(
-                                      user: user![index],
+                                      user: filteredUser![index],
                                       cardController: cardController);
                             },
                             swipeUpdateCallback:
@@ -272,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                             swipeCompleteCallback:
                                 (CardSwipeOrientation orientation,
                                     int index) async {
-                              if ((user![index].id != userId)) {
+                              if ((filteredUser![index].id != userId)) {
                                 if (orientation.name == "right") {
                                   final url = Uri.parse(
                                       "https://re-lation.herokuapp.com/like");
@@ -281,7 +289,7 @@ class _HomePageState extends State<HomePage> {
                                         "Content-Type": "application/json"
                                       },
                                       body: jsonEncode({
-                                        "like": user![index].id,
+                                        "like": filteredUser![index].id,
                                         "userID": userId
                                       }));
                                   if (responce.statusCode == 200) {
@@ -289,31 +297,31 @@ class _HomePageState extends State<HomePage> {
                                     await navigate(
                                         context: context,
                                         page: MatchPage(
-                                          user: user![index],
+                                          user: filteredUser![index],
                                         ));
                                     await createChannel(
                                         // ignore: use_build_context_synchronously
                                         StreamChatCore.of(context),
-                                        user![index].id);
+                                        filteredUser![index].id);
                                   }
                                 }
                               } else if (orientation.name == "left") {
-                                if ((user![index].id == userId)) {}
+                                if ((filteredUser![index].id == userId)) {}
                                 debugPrint("left");
                               } else if (orientation.name == "up") {
-                                if ((user![index].id == userId)) {}
+                                if ((filteredUser![index].id == userId)) {}
                                 debugPrint("up");
                               } else if (orientation.name == "down") {
-                                if ((user![index].id == userId)) {}
+                                if ((filteredUser![index].id == userId)) {}
                                 debugPrint("down");
                               }
 
-                              if (index == (user!.length - 1)) {
+                              if (index == (filteredUser!.length - 1)) {
                                 showSnackbar(
                                     "Sorry we don't have more accounts in your location");
                               }
                             },
-                            totalNum: user!.length),
+                            totalNum: filteredUser!.length),
                       ).pOnly(top: 20.h)
                     ],
                   ).pOnly(top: 20.h),

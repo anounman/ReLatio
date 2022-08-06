@@ -34,9 +34,13 @@ class _BottomBarState extends State<BottomBar> {
         children: [
           InkWell(
             onTap: () {
+              if ((widget.currentIndex != 0)) {
+                navigate(
+                    context: context,
+                    page: const HomePage(),
+                    isDistroyed: true);
+              }
               setIndex(0);
-              navigate(
-                  context: context, page: const HomePage(), isDistroyed: true);
             },
             child: const Icon(
               Icons.home_filled,
@@ -45,7 +49,9 @@ class _BottomBarState extends State<BottomBar> {
           ),
           InkWell(
             onTap: () {
-              navigate(context: context, page: const ChannelListPage());
+              if (widget.currentIndex != 1) {
+                navigate(context: context, page: const ChannelListPage());
+              }
             },
             child: const Icon(
               CupertinoIcons.chat_bubble_fill,
@@ -54,9 +60,13 @@ class _BottomBarState extends State<BottomBar> {
           ),
           InkWell(
             onTap: () {
+              if (widget.currentIndex != 2) {
+                navigate(
+                    context: context,
+                    page: const LikePage(),
+                    isDistroyed: true);
+              }
               setIndex(2);
-              navigate(
-                  context: context, page: const LikePage(), isDistroyed: true);
             },
             child: const Icon(
               CupertinoIcons.heart_fill,
@@ -65,11 +75,14 @@ class _BottomBarState extends State<BottomBar> {
           ),
           InkWell(
             onTap: () {
+              if (widget.currentIndex != 3) {
+                navigate(
+                    context: context,
+                    page: const ProfilePage(),
+                    isDistroyed: true);
+              }
+
               setIndex(3);
-              navigate(
-                  context: context,
-                  page: const ProfilePage(),
-                  isDistroyed: true);
             },
             child: const Icon(
               Icons.settings,

@@ -31,9 +31,9 @@ class _LikePageState extends State<LikePage> {
   }
 
   filterUserList() {
-    for (int i = 0; i < user!.length; i++) {
-      if (likes!.contains(user![i].id)) {
-        filterList.add(user![i]);
+    for (int i = 0; i < filteredUser!.length; i++) {
+      if (likes!.contains(filteredUser![i].id)) {
+        filterList.add(filteredUser![i]);
       }
     }
     setState(() {});

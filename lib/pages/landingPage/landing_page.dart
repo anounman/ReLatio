@@ -5,6 +5,7 @@ import 'package:check_mate/pages/register/registerpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../controller/get_geolocation.dart';
@@ -152,7 +153,47 @@ class _LadingPageState extends State<LadingPage> {
                                               .centered(),
                                         ],
                                       ).pOnly(right: 10.w)))
-                        .pOnly(top: 10.h),
+                        .pOnly(top: 5.h),
+                    (current == 2)
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              "By clicking continue , you agree with our"
+                                  .text
+                                  .size(12)
+                                  .make()
+                                  .pOnly(top: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await launchURL(context,
+                                          "https://sites.google.com/view/re-lation/home");
+                                    },
+                                    child: "Terms and Conditions"
+                                        .text
+                                        .size(12)
+                                        .color(primaryColor)
+                                        .make(),
+                                  ),
+                                  "&".text.size(12).make(),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      await launchURL(context,
+                                          "https://sites.google.com/view/re-lation-privacy/home");
+                                    },
+                                    child: "Privacy and Policy"
+                                        .text
+                                        .size(12)
+                                        .color(primaryColor)
+                                        .make(),
+                                  ),
+                                ],
+                              )
+                            ],
+                          )
+                        : Container(),
                   ],
                 ).p(20),
               ));
