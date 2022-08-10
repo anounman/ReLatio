@@ -1,7 +1,6 @@
 import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/Home/home.dart';
 import 'package:check_mate/pages/Home/widget/user_card.dart';
-import 'package:check_mate/widget/bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipecards/flutter_swipecards.dart';
@@ -43,7 +42,6 @@ class _LikePageState extends State<LikePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomBar(currentIndex: 2),
       body: ListView(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

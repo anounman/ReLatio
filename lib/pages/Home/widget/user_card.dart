@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipecards/flutter_swipecards.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import "dart:core";
 
 class UserCard extends StatelessWidget {
   UserCard({
@@ -84,24 +85,24 @@ class UserCard extends StatelessWidget {
                   )),
             ),
           ),
-          // Align(
-          //   alignment: Alignment.topRight,
-          //   child: Container(
-          //     width: 50.w,
-          //     height: 20.h,
-          //     decoration: BoxDecoration(
-          //         borderRadius: BorderRadius.circular(20),
-          //         color: Colors.grey.withOpacity(0.6)),
-          //     child: "1km"
-          //         .text
-          //         .size(1.sp)
-          //         .white
-          //         .bold
-          //         .make()
-          //         .pOnly(left: 5.w)
-          //         .centered(),
-          //   ),
-          // ).pOnly(right: 20.w, top: 20.h),
+          Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              width: 75.w,
+              height: 25.h,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.grey.withOpacity(0.6)),
+              child: "${(user.dist.calculated).toStringAsFixed(2)} KM"
+                  .text
+                  .size(1.sp)
+                  .white
+                  .bold
+                  .make()
+                  .pOnly(left: 5.w)
+                  .centered(),
+            ),
+          ).pOnly(right: 20.w, top: 20.h),
           GestureDetector(
             onTap: () {
               navigate(

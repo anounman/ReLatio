@@ -16,6 +16,7 @@ class MatchPage extends StatefulWidget {
   @override
   _MatchPageState createState() => _MatchPageState();
 }
+
 class _MatchPageState extends State<MatchPage> {
   int calculatedPercentage = 0;
   @override
@@ -170,7 +171,7 @@ class _MatchPageState extends State<MatchPage> {
               onTap: () {
                 navigate(
                     context: context,
-                    page: const ChannelListPage(),
+                    page: const ChatPage(),
                     isDistroyed: true);
               },
               child: Container(

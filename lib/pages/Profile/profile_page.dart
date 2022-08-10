@@ -3,7 +3,6 @@ import 'package:check_mate/data/profile_page_data.dart';
 import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/pages/landingPage/landing_page.dart';
 import 'package:check_mate/pages/register/questions_hobbies/hobbies/hobbie_box.dart';
-import 'package:check_mate/widget/bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -21,9 +20,8 @@ class _ProfilePageState extends State<ProfilePage> {
   int _imageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return KeepAlivePage(
+    return KeepAliveWrapper(
       child: Scaffold(
-        bottomNavigationBar: BottomBar(currentIndex: 3),
         backgroundColor: Colors.white,
         body: Stack(
           children: [

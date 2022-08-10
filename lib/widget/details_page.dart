@@ -3,7 +3,6 @@ import 'package:check_mate/data/profile_page_data.dart';
 import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/register/questions_hobbies/hobbies/hobbie_box.dart';
-import 'package:check_mate/widget/bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -31,9 +30,8 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return KeepAlivePage(
+    return KeepAliveWrapper(
       child: Scaffold(
-        bottomNavigationBar: BottomBar(currentIndex: 3),
         backgroundColor: Colors.white,
         body: Stack(
           children: [
@@ -82,7 +80,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   flexibleSpace: FlexibleSpaceBar(
                     titlePadding: const EdgeInsets.all(0),
                     title: Container(
-                      height: 55.h,
+                      height: 60.h,
                       padding: const EdgeInsets.all(16),
                       decoration: const BoxDecoration(
                         color: Colors.white,
@@ -132,23 +130,23 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ),
                                 ],
                               ),
-                              // Row(
-                              //   crossAxisAlignment: CrossAxisAlignment.end,
-                              //   children: [
-                              //     const Icon(
-                              //       Icons.location_on_outlined,
-                              //       color: Colors.pink,
-                              //       size: 14,
-                              //     ),
-                              //     Text(
-                              //       'New York . 25km',
-                              //       style: TextStyle(
-                              //         fontSize: 10,
-                              //         color: Colors.grey[400],
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const Icon(
+                                    Icons.location_on_outlined,
+                                    color: Colors.pink,
+                                    size: 14,
+                                  ),
+                                  Text(
+                                    "${widget.user.dist.calculated.toStringAsFixed(2)} KM away",
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.grey[400],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                           SizedBox(

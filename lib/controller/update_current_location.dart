@@ -7,14 +7,11 @@ class UpdateLocation {
     String longitude = position!.longitude.toString();
     String latitude = position!.latitude.toString();
     final url = Uri.parse("https://re-lation.herokuapp.com/updateLocation");
-    final responce = http.post(url,
+    http.post(url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          "id" : id,
-          "currentAddress" : {
-            "type" : "Point",
-            "coordinates" : [longitude , latitude]
-      }
-      }));
+          "id": id,
+          "coordinates": [longitude, latitude]
+        }));
   }
 }

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
-import 'package:check_mate/app.dart';
 
-class ChannelListPage extends StatefulWidget {
-  const ChannelListPage({
+class ChatPage extends StatefulWidget {
+  const ChatPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ChannelListPage> createState() => _ChannelListPageState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChannelListPageState extends State<ChannelListPage> {
+class _ChatPageState extends State<ChatPage> {
   // StreamChat
   late final _listController = StreamChannelListController(
     client: StreamChat.of(context).client,
