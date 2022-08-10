@@ -3,10 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../helper/consts.dart';
 
-class Input extends StatefulWidget {
-  const Input({
+class DInput extends StatefulWidget {
+  const DInput({
     Key? key,
     this.text = "",
+    this.isNext = false,
     this.isPassword = false,
     this.isNumber = false,
     this.hintText = "",
@@ -25,17 +26,19 @@ class Input extends StatefulWidget {
   final Widget? sufix;
   final Color? color;
   final bool ishide;
+  final bool isNext;
   final Widget? prefix;
   final TextEditingController controller;
   @override
-  State<Input> createState() => _InputState();
+  State<DInput> createState() => _DInputState();
 }
 
-class _InputState extends State<Input> {
+class _DInputState extends State<DInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
       height: height(context) * 0.081,
+      width: width(context) * 0.25,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: widget.color,
@@ -47,8 +50,9 @@ class _InputState extends State<Input> {
               keyboardType:
                   (widget.isNumber) ? TextInputType.phone : TextInputType.name,
               autofocus: true,
+              textInputAction: (widget.isNext) ? TextInputAction.next : null,
               controller: widget.controller,
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.center,
               decoration: InputDecoration(
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
@@ -56,14 +60,6 @@ class _InputState extends State<Input> {
                   fontFamily: "Roboto",
                   fontWeight: FontWeight.w500,
                   color: Colors.grey,
-                ),
-                prefixIcon: Visibility(
-                  visible: (widget.isNumberLogin || widget.prefix != null),
-                  child: (widget.prefix != null)
-                      ? widget.prefix!
-                      : SizedBox(
-                          width: width(context) * 0.22,
-                        ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),

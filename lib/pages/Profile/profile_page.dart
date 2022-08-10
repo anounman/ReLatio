@@ -89,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 children: [
                                   const SizedBox(width: 2),
                                   Text(
-                                    '$name, $age',
+                                    '$name, ${ageCalculate(age!)}',
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,

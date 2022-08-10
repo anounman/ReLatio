@@ -137,7 +137,7 @@ class UserCard extends StatelessWidget {
                         .headline6(context)
                         .fontWeight(FontWeight.w700)
                         .make(),
-                    " $age"
+                    " ${ageCalculate(user.age)}"
                         .text
                         .fontFamily("Roboto")
                         .white

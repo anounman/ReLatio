@@ -4,11 +4,11 @@ import 'package:check_mate/pages/register/questions_hobbies/hobbies/hobbie_box.d
 import 'package:check_mate/utils/formdata_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../../helper/consts.dart';
 import '../../../../utils/signup.dart';
-import '../../../Home/home.dart';
 
 class Hobbies extends StatefulWidget {
   const Hobbies({Key? key}) : super(key: key);
@@ -38,6 +38,7 @@ class _HobbiesState extends State<Hobbies> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         floatingActionButton: (seledtedHoobies.length < 5)
             ? null
             : GestureDetector(
@@ -47,7 +48,7 @@ class _HobbiesState extends State<Hobbies> {
                   isSigninUp = true;
                   setState(() {});
                   List<String> data = (await signUp())!;
-                  setUserId(data[0], data[1]);
+                  if (data.isNotEmpty) setUserId(data[0], data[1]);
                   // ignore: use_build_context_synchronously
                   // Navigator.pop(context);
                   // // ignore: use_build_context_synchronously
@@ -58,10 +59,8 @@ class _HobbiesState extends State<Hobbies> {
                   // Navigator.pop(context);
                   // // ignore: use_build_context_synchronously
                   // Navigator.pop(context);
-                  navigate(
-                      context: context,
-                      page: const HomePage(),
-                      isDistroyed: true);
+                  setLogin();
+                  Restart.restartApp();
                 },
                 child: Container(
                   height: height(context) * 0.07,

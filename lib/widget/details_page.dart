@@ -99,7 +99,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 children: [
                                   const SizedBox(width: 2),
                                   Text(
-                                    '${widget.user.name}, ${widget.user.age}',
+                                    '${widget.user.name}, ${ageCalculate(widget.user.age)}',
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,

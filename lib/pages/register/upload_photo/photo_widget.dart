@@ -16,7 +16,7 @@ List uploadedPhotoImageList = [];
 
 class _UploadBoxState extends State<UploadBox> {
   bool isCliked = false;
-  XFile? pickedFile;
+  List<XFile>? pickedFile;
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -31,13 +31,15 @@ class _UploadBoxState extends State<UploadBox> {
         itemBuilder: (context, index) {
           return GestureDetector(
               onTap: () async {
-                pickedFile = await ImagePicker()
-                    .pickImage(source: ImageSource.gallery, imageQuality: 70);
+                pickedFile =
+                    await ImagePicker().pickMultiImage(imageQuality: 70);
                 if (pickedFile != null) {
                   if (uploadedPhotoImageList.length > index) {
                     uploadedPhotoImageList.removeAt(index);
                   }
-                  uploadedPhotoImageList.insert(index, pickedFile);
+                  for (var image in pickedFile!) {
+                    uploadedPhotoImageList.insert(index, image);
+                  }
                 }
                 setState(() {});
                 upDateApp();

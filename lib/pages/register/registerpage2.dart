@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../../widget/text_field.dart';
+import '../../widget/date_input.dart';
 
 class RegisterPage2 extends StatefulWidget {
   const RegisterPage2({Key? key, required this.user}) : super(key: key);
@@ -17,10 +17,16 @@ class RegisterPage2 extends StatefulWidget {
 }
 
 class _RegisterPage2State extends State<RegisterPage2> {
+  TextEditingController controller = TextEditingController();
   TextEditingController controller1 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
+  
+
   @override
   void dispose() {
+    controller.dispose();
     controller1.dispose();
+    controller2.dispose();
     super.dispose();
   }
 
@@ -57,23 +63,53 @@ class _RegisterPage2State extends State<RegisterPage2> {
                           .bold
                           .make()
                           .centered(),
-                      Input(
-                        controller: controller1,
-                        isNumber: true,
-                        hintText: "18",
-                        color: Colors.grey[300],
-                      ).pOnly(left: 30.w, right: 30.w, top: 50.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          DInput(
+                            controller: controller,
+                            isNumber: true,
+                            hintText: "DD",
+                            isNext: true,
+                            color: Colors.grey[300],
+                          ),
+                          DInput(
+                            controller: controller1,
+                            isNumber: true,
+                            isNext: true,
+                            hintText: "MM",
+                            color: Colors.grey[300],
+                          ),
+                          DInput(
+                            controller: controller2,
+                            isNumber: true,
+                            hintText: "YYYY",
+                            color: Colors.grey[300],
+                          ),
+                        ],
+                      ).pOnly(top: 50.h),
                       GestureDetector(
                         onTap: () {
                           if (controller1.text == "") {
                             showSnackbar("Please Enter you age");
                           } else {
-                            if (controller1.text.length == 2) {
-                              if (int.parse(controller1.text.toString()) < 18) {
+                            if (controller1.text.length == 2 &&
+                                controller.text.length == 2 &&
+                                controller2.text.length == 4) {
+                              String dob =
+                                  "${controller.text}.${controller1.text}.${controller2.text}";
+
+                              int age = ageCalculate(dob);
+                              debugPrint("Age:$age");
+                              if (age < 18) {
                                 showSnackbar(
                                     "You are not old enogh to use this app");
                               } else {
-                                userData["age"] = controller1.text;
+                                if (!regExp.hasMatch(dob)) {
+                                  showSnackbar("Please Enter A Valid DOB");
+                                  return;
+                                }
+                                userData["age"] = dob;
                                 debugPrint(userData.toString());
                                 upDateApp();
                                 navigate(
@@ -81,7 +117,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
                                     page: RegisterPage3(user: widget.user));
                               }
                             } else {
-                              showSnackbar("Please Ente A Valid Age");
+                              showSnackbar("Please Ente A Valid DOB");
                             }
                           }
                         },
@@ -91,7 +127,11 @@ class _RegisterPage2State extends State<RegisterPage2> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: primaryColor.withOpacity(
-                                  (controller1.text.length == 2) ? 1 : 0.5)),
+                                  (controller1.text.length == 2 &&
+                                          controller.text.length == 2 &&
+                                          controller2.text.length == 4)
+                                      ? 1
+                                      : 0.5)),
                           child: "Continue"
                               .text
                               .white
