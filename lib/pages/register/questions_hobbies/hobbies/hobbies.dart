@@ -1,10 +1,10 @@
 import 'package:check_mate/helper/data_fetch.dart';
 import 'package:check_mate/model/form_data.dart';
+import 'package:check_mate/pages/Home/home.dart';
 import 'package:check_mate/pages/register/questions_hobbies/hobbies/hobbie_box.dart';
 import 'package:check_mate/utils/formdata_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../../helper/consts.dart';
@@ -41,42 +41,50 @@ class _HobbiesState extends State<Hobbies> {
         backgroundColor: Colors.white,
         floatingActionButton: (seledtedHoobies.length < 5)
             ? null
-            : GestureDetector(
-                onTap: () async {
-                  userData["hobbies"] = [seledtedHoobies];
-                  upDateApp();
-                  isSigninUp = true;
-                  setState(() {});
-                  List<String> data = (await signUp())!;
-                  if (data.isNotEmpty) setUserId(data[0], data[1]);
-                  // ignore: use_build_context_synchronously
-                  // Navigator.pop(context);
-                  // // ignore: use_build_context_synchronously
-                  // Navigator.pop(context);
-                  // // ignore: use_build_context_synchronously
-                  // Navigator.pop(context);
-                  // // ignore: use_build_context_synchronously
-                  // Navigator.pop(context);
-                  // // ignore: use_build_context_synchronously
-                  // Navigator.pop(context);
-                  setLogin();
-                  Restart.restartApp();
-                },
-                child: Container(
-                  height: height(context) * 0.07,
-                  width: height(context) * 0.07,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: primaryColor),
-                  child: const RotatedBox(
-                      quarterTurns: 2,
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 30,
-                      )).centered().pOnly(right: 10.w),
-                ),
-              ),
+            : (isSigninUp)
+                ? Container(
+                    height: height(context),
+                    width: width(context),
+                    color: Colors.white,
+                    child:
+                        Center(child: Image.asset("assets/images/loading.gif")))
+                : GestureDetector(
+                    onTap: () async {
+                      userData["hobbies"] = [seledtedHoobies];
+                      upDateApp();
+                      isSigninUp = true;
+                      setState(() {});
+                      List<String> data = (await signUp())!;
+                      debugPrint("Data:${data[0].toString()}");
+                      if (data.isNotEmpty) setUserId(data[0], data[1]);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                      navigate(context: context, page: const HomePage());
+                      setLogin();
+                    },
+                    child: Container(
+                      height: height(context) * 0.07,
+                      width: height(context) * 0.07,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: primaryColor),
+                      child: const RotatedBox(
+                          quarterTurns: 2,
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: 30,
+                          )).centered().pOnly(right: 10.w),
+                    ),
+                  ),
         body: (isSigninUp)
             ? Container(
                 height: height(context),

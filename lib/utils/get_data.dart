@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class Data {
   Future<AccountData?> getAccountData(id) async {
+    debugPrint("ID:$id");
     final url = Uri.parse("https://re-lation.herokuapp.com/getData");
     final res = await http.post(url,
         headers: {"Content-Type": "application/json"},
@@ -17,9 +18,9 @@ class Data {
     if (res.statusCode == 200) {
       debugPrint(res.body);
       return userDataFromJson(res.body);
-    } else if (res.statusCode == 400) {
+    } else {
       showSnackbar(
-          "User Deleted , please contact to the devlopers or clear your app data");
+          "User Deleted , please contact to the devloper or clear your app data");
     }
     return null;
   }

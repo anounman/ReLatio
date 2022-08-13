@@ -70,14 +70,15 @@ class _HomePageState extends State<HomePage>
   void filterUsers() async {
     final prefs = await SharedPreferences.getInstance();
     id = prefs.getString("userID")!;
-    if (filteredUser!.isEmpty) {
-      for (var i = 0; i < user!.length; i++) {
-        debugPrint("ID:${user![i].likes.contains(id)}");
-        if (!(user![i].likes.contains(id))) {
-          filteredUser!.add(user![i]);
-        }
-      }
-    }
+    // if (filteredUser!.isEmpty) {
+    //   for (var i = 0; i < user!.length; i++) {
+    //     debugPrint("ID:${user![i].likes.contains(id)}");
+    //     if (!(user![i].likes.contains(id))) {
+    //       filteredUser!.add(user![i]);
+    //     }
+    //   }
+    // }
+    filteredUser = user;
     setState(() {});
   }
 
@@ -124,7 +125,10 @@ class _HomePageState extends State<HomePage>
   }
 
   getUser() async {
-    accountData = await Data().getAccountData(userId);
+    final prefs = await SharedPreferences.getInstance();
+    String id = prefs.getString("userID") ?? "";
+    debugPrint("Data:$id");
+    accountData = await Data().getAccountData(id);
     await setUserData(accountData!);
     if (client == null) connetct();
     user = await UserData().getUserdata(accountData!.iterestedGender);

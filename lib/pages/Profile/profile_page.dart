@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:check_mate/data/profile_page_data.dart';
 import 'package:check_mate/helper/consts.dart';
+import 'package:check_mate/pages/Profile/widget/botom.dart';
 import 'package:check_mate/pages/landingPage/landing_page.dart';
 import 'package:check_mate/pages/register/questions_hobbies/hobbies/hobbie_box.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: IconButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          bootmSheet(context);
                         },
                         icon: const Icon(
                           Icons.edit,

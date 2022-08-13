@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/get_user_model.dart';
@@ -32,8 +33,10 @@ setGoogleUser(GoogleSignInAccount user) async {
 String curentChatUserdId = "";
 
 setUserId(id, userName) async {
+  debugPrint("Data:$id");
   final prefs = await SharedPreferences.getInstance();
-  prefs.setString("userID", id);
+  bool isSaved = await prefs.setString("userID", id);
+  debugPrint("Data:$isSaved");
   prefs.setString("name", userName);
   name = name;
   userId = id;
@@ -108,7 +111,8 @@ setLogOut() async {
   prefs.setBool("isLogedin", false);
   googleSignOut();
   prefs.clear();
-  upDateApp();
+  Restart.restartApp();
+  await upDateApp();
 }
 
 height(context) {
