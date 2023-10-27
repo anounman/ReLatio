@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
-
+import 'package:in_app_update/in_app_update.dart';
 import 'helper/consts.dart';
 import 'helper/keep_page_alive.dart';
 
@@ -20,6 +20,7 @@ class PageSelector extends StatefulWidget {
 
 class _PageSelectorState extends State<PageSelector> {
   int currentIndex = 0;
+  AppUpdateInfo? _updateInfo;
 
   List<Widget> pages = [
     const KeepAliveWrapper(child: HomePage()),
@@ -36,6 +37,7 @@ class _PageSelectorState extends State<PageSelector> {
 
   @override
   void initState() {
+    // checkForUpdate();
     getLoginStatus();
     getAuthData();
     super.initState();
@@ -46,6 +48,17 @@ class _PageSelectorState extends State<PageSelector> {
       currentIndex = i;
     });
   }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  // Future<void> checkForUpdate() async {
+  //   InAppUpdate.checkForUpdate().then((info) {
+  //     setState(() {
+  //       _updateInfo = info;
+  //     });
+  //   }).catchError((e) {
+  //     debugPrint(e.toString());
+  //   });
+  // }
 
   Widget bottomAppbar(BuildContext context) {
     return Container(

@@ -1,10 +1,10 @@
 import 'package:check_mate/helper/data_fetch.dart';
 import 'package:check_mate/model/form_data.dart';
-import 'package:check_mate/pages/Home/home.dart';
 import 'package:check_mate/pages/register/questions_hobbies/hobbies/hobbie_box.dart';
 import 'package:check_mate/utils/formdata_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../../helper/consts.dart';
@@ -39,7 +39,7 @@ class _HobbiesState extends State<Hobbies> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        floatingActionButton: (seledtedHoobies.length < 5)
+        floatingActionButton: (seledtedHoobies.length < 4)
             ? null
             : (isSigninUp)
                 ? Container(
@@ -55,20 +55,23 @@ class _HobbiesState extends State<Hobbies> {
                       isSigninUp = true;
                       setState(() {});
                       List<String> data = (await signUp())!;
-                      debugPrint("Data:${data[0].toString()}");
-                      if (data.isNotEmpty) setUserId(data[0], data[1]);
-                      // ignore: use_build_context_synchronously
-                      Navigator.pop(context);
-                      // ignore: use_build_context_synchronously
-                      Navigator.pop(context);
-                      // ignore: use_build_context_synchronously
-                      Navigator.pop(context);
-                      // ignore: use_build_context_synchronously
-                      Navigator.pop(context);
-                      // ignore: use_build_context_synchronously
-                      Navigator.pop(context);
-                      navigate(context: context, page: const HomePage());
-                      setLogin();
+                      debugPrint(data.toString());
+                      if (data.isNotEmpty) {
+                        setUserId(data[0], data[1]).then((value) {
+                          Navigator.pop(context);
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                          setLogin().then((value) {
+                            Restart.restartApp();
+                          });
+                        });
+                      }
                     },
                     child: Container(
                       height: height(context) * 0.07,

@@ -32,7 +32,7 @@ setGoogleUser(GoogleSignInAccount user) async {
 
 String curentChatUserdId = "";
 
-setUserId(id, userName) async {
+Future setUserId(id, userName) async {
   debugPrint("Data:$id");
   final prefs = await SharedPreferences.getInstance();
   bool isSaved = await prefs.setString("userID", id);
@@ -76,6 +76,7 @@ setUserData(AccountData accountData) async {
   hobbies = accountData.hobbies.first;
   pictures = accountData.pictures;
   likes = accountData.likes;
+
   upDateApp();
 }
 
@@ -99,7 +100,7 @@ Future getAuthData() async {
   upDateApp();
 }
 
-setLogin() async {
+Future setLogin() async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setBool("isLogedin", true);
   googlesignIn();
@@ -171,6 +172,33 @@ displayDialog({
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      });
+}
+
+locationDialog({
+  context,
+  index,
+  title,
+  subTitle,
+}) async {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(subTitle),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Turn On Location',
+                style: TextStyle(color: Colors.green),
+              ),
+              onPressed: () {
+                Geolocator.openAppSettings();
               },
             ),
           ],

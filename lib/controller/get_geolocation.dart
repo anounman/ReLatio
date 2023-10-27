@@ -18,6 +18,25 @@ class LocationController {
     return position;
   }
 
+  Future<bool> checkLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.deniedForever ||
+        permission == LocationPermission.unableToDetermine) {
+      await locationDialog(
+          title: "Location Permission Denined",
+          subTitle: "Please turn on your location in order to use our service");
+    }
+    if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   ///To get the Address from the position
   Future<String> getAddress() async {
     List<Placemark> placeMark = [];

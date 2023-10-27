@@ -1,5 +1,8 @@
+import 'package:check_mate/helper/consts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({
@@ -31,6 +34,19 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+          preferredSize: Size(width(context), 70.h),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                "Chat With Your❤️"
+                    .text
+                    .headline5(context)
+                    .make()
+                    .pOnly(top: 50, left: 20.w),
+                const Divider()
+              ])),
       body: StreamChannelListView(
         controller: _listController,
         onChannelTap: (channel) {

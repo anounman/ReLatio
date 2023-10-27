@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:check_mate/model/user_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
+
 import '../controller/get_geolocation.dart';
 import 'consts.dart';
 
@@ -18,18 +20,20 @@ setLocation(addres) {
   upDateApp();
 }
 
-checkUser(email) async {
+singnIn(email, password) async {
+  final prefs = await SharedPreferences.getInstance();
   debugPrint("Email: $email");
-  final uri = Uri.parse("https://re-lation.herokuapp.com/checkUser");
+  final uri = Uri.parse("https://api-relation.vercel.app/signIn");
   final responce = await http.post(uri,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "email": email.toString(),
-        "Authentication": authToken,
-      }));
+      body: jsonEncode(
+          {"email": email.toString(), "password": password.toString()}));
   debugPrint(responce.statusCode.toString());
   if (responce.statusCode == 200) {
     var data = jsonDecode(responce.body);
+    authToken = data["token"];
+    debugPrint("Token:$authToken");
+    prefs.setString('token', authToken!);
     setUserId(data["_id"], data["name"]);
     setLogin();
     return true;

@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart' as log;
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-const streamKey = 'zau2vjt9zfg4';
+const streamKey = 'b9337xmtsnp7';
 const secretKey =
-    'nw5fmprwycmyd4burwgcvxkedrdg7fpmwzkg287fmfwu5ucsqa3jx69t9sbcxdk5';
+    'fajnjd4t7jbnjycqsgduk92srbhn95pgg4rdervnr4d95pru92h6vjfg3bc75t8y';
 
 var logger = log.Logger();
 

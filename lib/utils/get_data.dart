@@ -8,13 +8,13 @@ import 'package:http/http.dart' as http;
 class Data {
   Future<AccountData?> getAccountData(id) async {
     debugPrint("ID:$id");
-    final url = Uri.parse("https://re-lation.herokuapp.com/getData");
+    final url = Uri.parse("https://api-relation.vercel.app/getData");
     final res = await http.post(url,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "id": id.toString(),
-          "Authentication": authToken,
-        }));
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": authToken!
+        },
+        body: jsonEncode({"id": id.toString()}));
     if (res.statusCode == 200) {
       debugPrint(res.body);
       return userDataFromJson(res.body);

@@ -58,3 +58,4 @@ class AccountData {
         "likes": List<dynamic>.from(likes.map((e) => e)),
       };
 }
+

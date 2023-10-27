@@ -45,7 +45,8 @@ class _RewardState extends State<Reward> {
           // Releases an ad resource when it fails to load
           ad.dispose();
 
-          debugPrint('Ad load failed (code=${error.code} message=${error.message})');
+          debugPrint(
+              'Ad load failed (code=${error.code} message=${error.message})');
         },
       ),
     );
@@ -146,7 +147,8 @@ class _RewardState extends State<Reward> {
       setState(() {
         coin = coin + (reward.amount).toInt();
       });
-      debugPrint('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
+      debugPrint(
+          '$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
     });
     _rewardedAd = null;
   }
@@ -176,7 +178,8 @@ class _RewardState extends State<Reward> {
 
   void _showRewardedInterstitialAd() {
     if (_rewardedInterstitialAd == null) {
-      debugPrint('Warning: attempt to show rewarded interstitial before loaded.');
+      debugPrint(
+          'Warning: attempt to show rewarded interstitial before loaded.');
       return;
     }
     _rewardedInterstitialAd!.fullScreenContentCallback =
@@ -199,7 +202,8 @@ class _RewardState extends State<Reward> {
     _rewardedInterstitialAd!.setImmersiveMode(true);
     _rewardedInterstitialAd!.show(
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-      debugPrint('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
+      debugPrint(
+          '$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
     });
     _rewardedInterstitialAd = null;
   }

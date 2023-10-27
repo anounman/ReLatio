@@ -6,7 +6,7 @@ List<String> uploadedImageUrl = [];
 
 Future uploadFile(file) async {
   debugPrint(file.path.toString());
-  final uri = Uri.parse("https://re-lation.herokuapp.com/uploadImage");
+  final uri = Uri.parse("https://api-relation.vercel.app/uploadImage");
   var requests = http.MultipartRequest('POST', uri);
   requests.files
       .add(await http.MultipartFile.fromPath('photo', file.path.toString()));

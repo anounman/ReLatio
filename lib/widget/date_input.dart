@@ -15,6 +15,7 @@ class DInput extends StatefulWidget {
     this.sufix,
     this.color = const Color.fromRGBO(245, 245, 245, 1),
     this.prefix,
+    required this.maxLength,
     required this.controller,
     this.isNumberLogin = false,
   }) : super(key: key);
@@ -27,6 +28,7 @@ class DInput extends StatefulWidget {
   final Color? color;
   final bool ishide;
   final bool isNext;
+  final int maxLength;
   final Widget? prefix;
   final TextEditingController controller;
   @override
@@ -37,7 +39,7 @@ class _DInputState extends State<DInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height(context) * 0.081,
+      height: height(context) * 0.088,
       width: width(context) * 0.25,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -52,8 +54,15 @@ class _DInputState extends State<DInput> {
               autofocus: true,
               textInputAction: (widget.isNext) ? TextInputAction.next : null,
               controller: widget.controller,
+              maxLength: widget.maxLength,
               textAlign: TextAlign.center,
+              onChanged: (value) {
+                if (value.length == widget.maxLength && widget.isNext) {
+                  FocusScope.of(context).nextFocus();
+                }
+              },
               decoration: InputDecoration(
+                counter: const Offstage(),
                 hintText: widget.hintText,
                 hintStyle: TextStyle(
                   fontSize: 17.sp,

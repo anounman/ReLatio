@@ -20,7 +20,6 @@ class _RegisterPage2State extends State<RegisterPage2> {
   TextEditingController controller = TextEditingController();
   TextEditingController controller1 = TextEditingController();
   TextEditingController controller2 = TextEditingController();
-  
 
   @override
   void dispose() {
@@ -51,7 +50,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
                       fit: BoxFit.fitWidth,
                     )),
                 SizedBox(
-                  height: height(context) * 0.8,
+                  height: height(context) * 0.9,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -69,6 +68,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
                           DInput(
                             controller: controller,
                             isNumber: true,
+                            maxLength: 2,
                             hintText: "DD",
                             isNext: true,
                             color: Colors.grey[300],
@@ -77,12 +77,14 @@ class _RegisterPage2State extends State<RegisterPage2> {
                             controller: controller1,
                             isNumber: true,
                             isNext: true,
+                            maxLength: 2,
                             hintText: "MM",
                             color: Colors.grey[300],
                           ),
                           DInput(
                             controller: controller2,
                             isNumber: true,
+                            maxLength: 4,
                             hintText: "YYYY",
                             color: Colors.grey[300],
                           ),

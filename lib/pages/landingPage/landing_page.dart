@@ -1,6 +1,6 @@
 import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/helper/data_fetch.dart';
-import 'package:check_mate/pages/Home/home.dart';
+import 'package:check_mate/page_selector.dart';
 import 'package:check_mate/pages/register/registerpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,21 +92,29 @@ class _LadingPageState extends State<LadingPage> {
                                     duration: const Duration(seconds: 2),
                                     curve: Curves.easeOutCirc);
                               } else {
+                                bool permission =
+                                    await LocationController().checkLocation();
+                                if (permission == false) {
+                                  return;
+                                }
                                 setState(() {
                                   isCheck = true;
                                 });
                                 GoogleSignInAccount user = await googlesignIn();
                                 //set id and email value to a gobal variable
                                 await setGoogleUser(user);
-                                bool isExist = await checkUser(user.email);
+                                bool isExist =
+                                    await singnIn(user.email, user.id);
                                 setState(() {
                                   isCheck = false;
                                 });
                                 debugPrint("isExist: $isExist , ${user.email}");
                                 if (isExist) {
                                   showSnackbar("Welcome Back!!");
-                                  navigate(
-                                      context: context, page: const HomePage());
+                                  setLogin().then((value) => navigate(
+                                      context: context,
+                                      isDistroyed: true,
+                                      page: const PageSelector()));
                                 } else {
                                   debugPrint(user.toString());
                                   if (user != null) {

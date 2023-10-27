@@ -55,7 +55,14 @@ class _LikePageState extends State<LikePage> {
               .make()
               .pOnly(top: 20.h, left: 20.w, bottom: 10.h),
           (filterList.isEmpty)
-              ? Container()
+              ? SizedBox(
+                  width: width(context) * 0.7,
+                  child:
+                      "No one like you keep patience , we will inform you if somone like your profile"
+                          .text
+                          .center
+                          .make(),
+                ).pOnly(top: height(context) * 0.4, left: 20.w, right: 20.w)
               : SizedBox(
                   height: height(context) * 0.8,
                   width: width(context),

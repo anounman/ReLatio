@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:new_version/new_version.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:stream_chat_persistence/stream_chat_persistence.dart';
@@ -83,6 +84,8 @@ void main() async {
     client: client,
   ));
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key, required this.client}) : super(key: key);
