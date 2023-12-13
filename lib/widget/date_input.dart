@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:velocity_x/velocity_x.dart';
+
 import '../helper/consts.dart';
 
 class DInput extends StatefulWidget {
-  const DInput({
-    Key? key,
+  DInput({
+    super.key,
     this.text = "",
     this.isNext = false,
     this.isPassword = false,
     this.isNumber = false,
     this.hintText = "",
     this.ishide = false,
+    this.maxInput,
     this.sufix,
     this.color = const Color.fromRGBO(245, 245, 245, 1),
     this.prefix,
     required this.controller,
     this.isNumberLogin = false,
-  }) : super(key: key);
+  });
   final String text;
   final bool isPassword;
   final bool isNumber;
@@ -27,7 +29,9 @@ class DInput extends StatefulWidget {
   final Color? color;
   final bool ishide;
   final bool isNext;
+
   final Widget? prefix;
+  int? maxInput;
   final TextEditingController controller;
   @override
   State<DInput> createState() => _DInputState();
@@ -51,6 +55,17 @@ class _DInputState extends State<DInput> {
                   (widget.isNumber) ? TextInputType.phone : TextInputType.name,
               autofocus: true,
               textInputAction: (widget.isNext) ? TextInputAction.next : null,
+              onChanged: (value) {
+                if (widget.maxInput != null) {
+                  if (value.length == widget.maxInput) {
+                    if (widget.isNext) {
+                      FocusScope.of(context).nextFocus();
+                    } else {
+                      FocusScope.of(context).unfocus();
+                    }
+                  }
+                }
+              },
               controller: widget.controller,
               textAlign: TextAlign.center,
               decoration: InputDecoration(

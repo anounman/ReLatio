@@ -91,6 +91,8 @@ Future getAuthData() async {
   isLogedin = prefs.getBool("isLogedin") ?? false;
   if (!isLogedin) return;
   var user = prefs.getString("userID");
+  String? logToken = prefs.getString('authToken');
+  if (logToken != null) authToken = logToken;
   if (user != null) userId = user;
   var email = prefs.getString("userEmail");
   if (email != null) userEmail = email;
@@ -99,9 +101,10 @@ Future getAuthData() async {
   upDateApp();
 }
 
-setLogin() async {
+setLogin(authToken) async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setBool("isLogedin", true);
+  prefs.setString('authToken', authToken);
   googlesignIn();
   upDateApp();
 }

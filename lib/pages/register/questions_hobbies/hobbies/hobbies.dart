@@ -11,7 +11,7 @@ import '../../../../helper/consts.dart';
 import '../../../../utils/signup.dart';
 
 class Hobbies extends StatefulWidget {
-  const Hobbies({Key? key}) : super(key: key);
+  const Hobbies({super.key});
 
   @override
   State<Hobbies> createState() => _HobbiesState();
@@ -68,7 +68,7 @@ class _HobbiesState extends State<Hobbies> {
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                       navigate(context: context, page: const HomePage());
-                      setLogin();
+                      setLogin(data[2]);
                     },
                     child: Container(
                       height: height(context) * 0.07,

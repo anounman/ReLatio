@@ -4,14 +4,13 @@ import 'package:check_mate/pages/Home/widget/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipecards/flutter_swipecards.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
-import '../../controller/chat_controller.dart';
+
 import '../../helper/consts.dart';
 import '../match_page.dart';
 
 class LikePage extends StatefulWidget {
-  const LikePage({Key? key}) : super(key: key);
+  const LikePage({super.key});
 
   @override
   State<LikePage> createState() => _LikePageState();
@@ -55,7 +54,15 @@ class _LikePageState extends State<LikePage> {
               .make()
               .pOnly(top: 20.h, left: 20.w, bottom: 10.h),
           (filterList.isEmpty)
-              ? Container()
+              ? Container(
+                      child: "0 Likes try a bit harder"
+                          .text
+                          .size(20.sp)
+                          .center
+                          .black
+                          .make())
+                  .centered()
+                  .pOnly(top: MediaQuery.of(context).size.height * 0.38)
               : SizedBox(
                   height: height(context) * 0.8,
                   width: width(context),
@@ -94,10 +101,10 @@ class _LikePageState extends State<LikePage> {
                               page: MatchPage(
                                 user: filterList[index],
                               ));
-                          await createChannel(
-                              // ignore: use_build_context_synchronously
-                              StreamChatCore.of(context),
-                              filterList[index].id);
+                          // await createChannel(
+                          //     // ignore: use_build_context_synchronously
+                          //     StreamChatCore.of(context),
+                          //     filterList[index].id);
                           // }
                         } else if (orientation.name == "left") {
                           debugPrint("left");

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/helper/data_fetch.dart';
 import 'package:check_mate/pages/Home/home.dart';
@@ -5,7 +7,6 @@ import 'package:check_mate/pages/register/registerpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../controller/get_geolocation.dart';
@@ -13,7 +14,7 @@ import '../../controller/google_signin.dart';
 import '../../data/loding_page.dart';
 
 class LadingPage extends StatefulWidget {
-  const LadingPage({Key? key}) : super(key: key);
+  const LadingPage({super.key});
 
   @override
   State<LadingPage> createState() => _LadingPageState();
@@ -98,18 +99,22 @@ class _LadingPageState extends State<LadingPage> {
                                 GoogleSignInAccount user = await googlesignIn();
                                 //set id and email value to a gobal variable
                                 await setGoogleUser(user);
-                                bool isExist = await checkUser(user.email);
+                                var isExist =
+                                    await signIn(user.email, user.id);
+                                log(isExist.toString());
                                 setState(() {
                                   isCheck = false;
                                 });
                                 debugPrint("isExist: $isExist , ${user.email}");
                                 if (isExist) {
                                   showSnackbar("Welcome Back!!");
+                                  // ignore: use_build_context_synchronously
                                   navigate(
                                       context: context, page: const HomePage());
                                 } else {
                                   debugPrint(user.toString());
                                   if (user != null) {
+                                    // ignore: use_build_context_synchronously
                                     navigate(
                                         context: context,
                                         page: RegisterPage(user: user),
@@ -167,10 +172,7 @@ class _LadingPageState extends State<LadingPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   GestureDetector(
-                                    onTap: () async {
-                                      await launchURL(context,
-                                          "https://sites.google.com/view/re-lation/home");
-                                    },
+                                    onTap: () async {},
                                     child: "Terms and Conditions"
                                         .text
                                         .size(12)
@@ -179,10 +181,7 @@ class _LadingPageState extends State<LadingPage> {
                                   ),
                                   "&".text.size(12).make(),
                                   GestureDetector(
-                                    onTap: () async {
-                                      await launchURL(context,
-                                          "https://sites.google.com/view/re-lation-privacy/home");
-                                    },
+                                    onTap: () async {},
                                     child: "Privacy and Policy"
                                         .text
                                         .size(12)

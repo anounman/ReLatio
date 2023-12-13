@@ -1,8 +1,4 @@
-import 'dart:convert';
 
-import 'package:check_mate/helper/consts.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 
 // generateToken(id) async {
 //   final responce = await http.post(
@@ -10,7 +6,7 @@ import 'package:http/http.dart' as http;
 //       headers: {"Content-Type": "application/json"},
 //       body: jsonEncode({
 //         "id": id,
-//         "Authentication": authToken,
+//         "Authorization": authToken,
 //       }));
 //   if (responce.statusCode == 200) {
 //     debugPrint("TOKEN:${responce.body}");

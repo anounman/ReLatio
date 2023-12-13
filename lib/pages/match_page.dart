@@ -2,16 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/helper/data_fetch.dart';
 import 'package:check_mate/model/user_data.dart';
-import 'package:check_mate/pages/Chat/chat_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class MatchPage extends StatefulWidget {
   const MatchPage({
-    Key? key,
+    super.key,
     required this.user,
-  }) : super(key: key);
+  });
   final UserModel user;
   @override
   _MatchPageState createState() => _MatchPageState();
@@ -169,10 +168,7 @@ class _MatchPageState extends State<MatchPage> {
             const Spacer(),
             GestureDetector(
               onTap: () {
-                navigate(
-                    context: context,
-                    page: const ChatPage(),
-                    isDistroyed: true);
+                //should be navigate to another page
               },
               child: Container(
                 height: 56,
