@@ -11,7 +11,7 @@ import '../../../../helper/consts.dart';
 import '../../../../utils/signup.dart';
 
 class Hobbies extends StatefulWidget {
-  const Hobbies({Key? key}) : super(key: key);
+  const Hobbies({super.key});
 
   @override
   State<Hobbies> createState() => _HobbiesState();

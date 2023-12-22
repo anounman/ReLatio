@@ -38,21 +38,21 @@ class LocalNotificationService {
 
     _notificationsPlugin.initialize(
       initializationSettings,
-      onSelectNotification: (String? id) async {
-        debugPrint("onSelectNotification");
-        if (id!.isNotEmpty) {
-          debugPrint("Router Value1234 $id");
+      // onSelectNotification: (String? id) async {
+      //   debugPrint("onSelectNotification");
+      //   if (id!.isNotEmpty) {
+      //     debugPrint("Router Value1234 $id");
 
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) => DemoScreen(
-          //       id: id,
-          //     ),
-          //   ),
-          // );
+      //     // Navigator.of(context).push(
+      //     //   MaterialPageRoute(
+      //     //     builder: (context) => DemoScreen(
+      //     //       id: id,
+      //     //     ),
+      //     //   ),
+      //     // );
 
-        }
-      },
+      //   }
+      // },
     );
   }
 }

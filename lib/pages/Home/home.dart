@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:check_mate/controller/update_current_location.dart';
 import 'package:check_mate/helper/consts.dart';
@@ -8,6 +9,7 @@ import 'package:check_mate/model/user_data.dart';
 import 'package:check_mate/pages/Home/widget/user_card.dart';
 import 'package:check_mate/pages/match_page.dart';
 import 'package:check_mate/pages/notificationservice/local_notification_service.dart';
+import 'package:check_mate/utils/apis.dart';
 import 'package:check_mate/utils/get_data.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +26,7 @@ import '../../utils/user_service.dart';
 import '../landingPage/landing_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -38,7 +40,6 @@ class _HomePageState extends State<HomePage>
   late CardController cardController;
   TextEditingController? controller;
   AccountData? accountData;
-  StreamChatClient? client;
   String id = "";
 
   @override
@@ -65,8 +66,6 @@ class _HomePageState extends State<HomePage>
     FirebaseMessaging.onMessageOpenedApp.listen(
       (message) {},
     );
-
-    super.initState();
   }
 
   void filterUsers() async {
@@ -94,20 +93,14 @@ class _HomePageState extends State<HomePage>
       throw ArgumentError(
           'You must allow notification permissions in order to receive push notifications');
     }
-    firebaseMessaging.onTokenRefresh.listen(updateToken);
     FirebaseMessaging.onMessage.listen((message) async {
       debugPrint('message.data: ${message.data}');
-      handleNotification(
-        message,
-        StreamChat.of(context).client,
-      );
     });
     FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
   }
 
   addNotificationToken(id) async {
     String token = await getDeviceTokenToSendNotification();
-    updateToken(token);
     debugPrint(token);
     var responce = await http.post(
         Uri.parse("https://api-relation.vercel.app/addNotificationToken"),
@@ -128,10 +121,6 @@ class _HomePageState extends State<HomePage>
     return token.toString();
   }
 
-  updateToken(String token) {
-    StreamChat.of(context).client.addDevice(token, PushProvider.firebase);
-  }
-
   getUser() async {
     final prefs = await SharedPreferences.getInstance();
     String id = prefs.getString("userID") ?? "";
@@ -145,8 +134,8 @@ class _HomePageState extends State<HomePage>
     accountData = await Data().getAccountData(id);
 
     await setUserData(accountData!);
-    if (client == null) connetct();
     user = await UserData().getUserdata(accountData!.iterestedGender);
+    log(user.toString());
     UpdateLocation().updateLocation(accountData!.id);
     filterUsers();
     setState(() {});
@@ -160,16 +149,7 @@ class _HomePageState extends State<HomePage>
     debugPrint("Connectiong.....");
     debugPrint("id and token:$id");
     // ignore: use_build_context_synchronously
-    client = StreamChatCore.of(context).client;
-    // // userToken = await generateToken(id);
-    userToken = client!.devToken(id.toString()).rawValue;
-    // debugPrint(userToken);
-    client!.connectUser(
-      User(id: id.toString(), name: name, extraData: {
-        'name': name,
-      }),
-      userToken,
-    );
+
     setState(() {});
     debugPrint("Conected");
   }
@@ -195,12 +175,13 @@ class _HomePageState extends State<HomePage>
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: width(context) * 0.6,
+                          // width: width(context) * 0.6,
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Icon(
                                     Icons.location_on,

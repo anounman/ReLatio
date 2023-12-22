@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:check_mate/model/user_data.dart';
+import 'package:check_mate/utils/apis.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,70 +36,11 @@ singnIn(email, password) async {
     debugPrint("Token:$authToken");
     prefs.setString('token', authToken!);
     setUserId(data["_id"], data["name"]);
-    setLogin();
+    setLogin(data['token']);
     return true;
   } else {
     return false;
   }
-}
-
-String getChannelName(Channel channel, User currentUser) {
-  if (channel.name != null) {
-    return channel.name!;
-  } else if (channel.state?.members.isNotEmpty ?? false) {
-    final otherMembers = channel.state?.members
-        .where(
-          (element) => element.userId != currentUser.id,
-        )
-        .toList();
-
-    if (otherMembers?.length == 1) {
-      return otherMembers!.first.user!.name;
-    } else {
-      return 'Multiple users';
-    }
-  } else {
-    return 'No Channel Name';
-  }
-}
-
-String getChannelId(Channel channel, User currentUser) {
-  if (channel.name != null) {
-    return channel.name!;
-  } else if (channel.state?.members.isNotEmpty ?? false) {
-    final otherMembers = channel.state?.members
-        .where(
-          (element) => element.userId != currentUser.id,
-        )
-        .toList();
-
-    if (otherMembers?.length == 1) {
-      return otherMembers!.first.user!.id;
-    } else {
-      return 'Multiple users';
-    }
-  } else {
-    return 'No Channel Name';
-  }
-}
-
-String? getChannelImage(Channel channel, User currentUser) {
-  if (channel.image != null) {
-    return channel.image!;
-  } else if (channel.state?.members.isNotEmpty ?? false) {
-    final otherMembers = channel.state?.members
-        .where(
-          (element) => element.userId != currentUser.id,
-        )
-        .toList();
-
-    if (otherMembers?.length == 1) {
-      return otherMembers!.first.user?.image;
-    }
-  } else {
-    return null;
-  }
-  return null;
 }
 
 Map<dynamic, dynamic> userData = {

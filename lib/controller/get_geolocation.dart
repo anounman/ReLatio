@@ -1,4 +1,3 @@
-import 'package:check_mate/helper/consts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';

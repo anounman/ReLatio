@@ -2,6 +2,7 @@ import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/helper/data_fetch.dart';
 import 'package:check_mate/pages/register/upload_photo/photo_widget.dart';
 import 'package:check_mate/utils/upload_file.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -9,7 +10,7 @@ import 'package:velocity_x/velocity_x.dart';
 import '../questions_hobbies/hobbies/hobbies.dart';
 
 class PhotoUploadPage extends StatefulWidget {
-  const PhotoUploadPage({Key? key}) : super(key: key);
+  const PhotoUploadPage({super.key});
 
   @override
   State<PhotoUploadPage> createState() => _PhotoUploadPageState();
@@ -62,8 +63,20 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
                       onTap: () async {
                         isUploading = true;
                         setState(() {});
-                        if (uploadedPhotoImageList.length < 3) {
-                          showSnackbar("Please Select atleast 3 images");
+                        //if it's in debug mode then we don't have to upload 3 pictures
+                        if (!kDebugMode) {
+                          if (uploadedPhotoImageList.length < 3) {
+                            showSnackbar("Please Select atleast 3 images");
+                          } else {
+                            for (var element in uploadedPhotoImageList) {
+                              await uploadFile(element);
+                            }
+                            isUploading = false;
+                            setState(() {});
+                            userData["pictures"] = uploadedImageUrl;
+                            upDateApp();
+                            navigate(context: context, page: const Hobbies());
+                          }
                         } else {
                           for (var element in uploadedPhotoImageList) {
                             await uploadFile(element);

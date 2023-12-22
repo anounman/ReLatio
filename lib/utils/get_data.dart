@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:check_mate/helper/consts.dart';
 import 'package:check_mate/model/get_user_model.dart';
+import 'package:check_mate/utils/apis.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Data {
   Future<AccountData?> getAccountData(id) async {
@@ -16,7 +18,7 @@ class Data {
         },
         body: jsonEncode({"id": id.toString()}));
     if (res.statusCode == 200) {
-      debugPrint(res.body);
+      debugPrint("account data :${res.body}");
       return userDataFromJson(res.body);
     } else {
       showSnackbar(

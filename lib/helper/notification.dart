@@ -5,14 +5,14 @@ Future<FlutterLocalNotificationsPlugin> setupLocalNotifications() async {
       FlutterLocalNotificationsPlugin();
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('launch_background');
-  const IOSInitializationSettings initializationSettingsIOS =
-      IOSInitializationSettings();
-  const InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-    iOS: initializationSettingsIOS,
-  );
+  // const IOSInitializationSettings initializationSettingsIOS =
+  //     IOSInitializationSettings();
+  // const InitializationSettings initializationSettings = InitializationSettings(
+  //   android: initializationSettingsAndroid,
+  //   iOS: initializationSettingsIOS,
+  // );
 
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  // await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   return flutterLocalNotificationsPlugin;
 }

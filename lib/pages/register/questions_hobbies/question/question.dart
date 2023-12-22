@@ -8,7 +8,7 @@ import '../../../../helper/consts.dart';
 import '../../../../utils/signup.dart';
 
 class QuestionPage extends StatefulWidget {
-  QuestionPage({Key? key, required this.post}) : super(key: key);
+  QuestionPage({super.key, required this.post});
   List<ApiFormData> post;
 
   @override

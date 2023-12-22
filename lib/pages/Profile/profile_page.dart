@@ -11,7 +11,7 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../helper/keep_page_alive.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({super.key});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -71,7 +71,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   flexibleSpace: FlexibleSpaceBar(
                     titlePadding: const EdgeInsets.all(0),
                     title: Container(
-                      height: 57.h,
                       padding: const EdgeInsets.all(16),
                       decoration: const BoxDecoration(
                         color: Colors.white,
@@ -85,6 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Row(
                                 children: [
@@ -259,11 +259,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       endIndent: 32,
                     ),
                     const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text(
                             'Hobbies',
                             style: TextStyle(
@@ -288,12 +288,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
                                     'Gender',
                                     style: TextStyle(
@@ -342,12 +342,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            const Padding(
+                              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
                                     'Interested Gender',
                                     style: TextStyle(
@@ -393,9 +393,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ).centered(),
                     const SizedBox(height: 16),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                        child: Row())
+                    const Padding(
+                        padding: EdgeInsets.fromLTRB(8, 0, 8, 0), child: Row())
                   ]),
                 ),
                 SliverToBoxAdapter(

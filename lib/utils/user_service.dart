@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:check_mate/controller/get_geolocation.dart';
 import 'package:check_mate/helper/consts.dart';
+import 'package:check_mate/utils/apis.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/user_data.dart';
 
@@ -29,7 +31,8 @@ class UserData {
     if (respoce.statusCode == 200) {
       return userFromJson(respoce.body);
     } else {
-      return null;
+      debugPrint("Failed to retrive auth token :$authToken");
     }
+    return null;
   }
 }

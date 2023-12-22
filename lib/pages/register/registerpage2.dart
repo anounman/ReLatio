@@ -9,7 +9,7 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../widget/date_input.dart';
 
 class RegisterPage2 extends StatefulWidget {
-  const RegisterPage2({Key? key, required this.user}) : super(key: key);
+  const RegisterPage2({super.key, required this.user});
   final GoogleSignInAccount user;
 
   @override
@@ -70,11 +70,13 @@ class _RegisterPage2State extends State<RegisterPage2> {
                             isNumber: true,
                             maxLength: 2,
                             hintText: "DD",
+                            maxInput: 2,
                             isNext: true,
                             color: Colors.grey[300],
                           ),
                           DInput(
                             controller: controller1,
+                            maxInput: 2,
                             isNumber: true,
                             isNext: true,
                             maxLength: 2,

@@ -1,4 +1,4 @@
-import 'package:check_mate/pages/Chat/chat_home.dart';
+import 'package:check_mate/pages/Chat/chat_page.dart';
 import 'package:check_mate/pages/Home/home.dart';
 import 'package:check_mate/pages/Profile/profile_page.dart';
 import 'package:check_mate/pages/landingPage/landing_page.dart';
@@ -12,7 +12,7 @@ import 'helper/consts.dart';
 import 'helper/keep_page_alive.dart';
 
 class PageSelector extends StatefulWidget {
-  const PageSelector({Key? key}) : super(key: key);
+  const PageSelector({super.key});
 
   @override
   State<PageSelector> createState() => _PageSelectorState();
@@ -62,7 +62,7 @@ class _PageSelectorState extends State<PageSelector> {
 
   Widget bottomAppbar(BuildContext context) {
     return Container(
-      height: height(context) * 0.06,
+      height: height(context) * 0.07,
       width: width(context),
       color: Colors.white,
       child: Row(
@@ -112,8 +112,14 @@ class _PageSelectorState extends State<PageSelector> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: isLogedin == true ? bottomAppbar(context) : null,
-      body: isLogedin == true ? pages[currentIndex] : const LadingPage(),
+      bottomNavigationBar:
+          isLogedin == true ? bottomAppbar(context) : Container(),
+      body: isLogedin == true
+          ? SizedBox(
+              height: MediaQuery.of(context).size.height * 0.96,
+              child: pages[currentIndex],
+            )
+          : const LadingPage(),
     );
   }
 }
